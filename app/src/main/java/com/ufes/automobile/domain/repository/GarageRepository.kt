@@ -7,4 +7,5 @@ interface GarageRepository {
     suspend fun getVehicles(): Flow<List<Vehicle>>
     suspend fun addVehicle(vehicle: Vehicle)
     suspend fun deleteVehicle(vehicleId: Int)
+    suspend fun getVehicleById(vehicleId: Int): Vehicle?
 }

@@ -22,4 +22,8 @@ class GarageRepositoryImpl(private val vehicleDao: VehicleDao) : GarageRepositor
     override suspend fun deleteVehicle(vehicleId: Int) {
         vehicleDao.deleteById(vehicleId)
     }
+
+    override suspend fun getVehicleById(vehicleId: Int): Vehicle? {
+        return vehicleDao.getVehicleById(vehicleId)?.toDomainModel()
+    }
 }

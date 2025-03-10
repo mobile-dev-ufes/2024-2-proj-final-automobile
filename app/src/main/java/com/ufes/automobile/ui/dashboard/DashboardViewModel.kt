@@ -1,4 +1,5 @@
-package com.ufes.automobile.ui.garage
+package com.ufes.automobile.ui.dashboard
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ufes.automobile.domain.model.Vehicle
@@ -11,21 +12,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GarageViewModel @Inject constructor(
+class DashboardViewModel @Inject constructor(
     private val garageRepository: GarageRepository
 ) : ViewModel() {
-    private val _vehicles = MutableStateFlow<List<Vehicle>>(emptyList())
-    val vehicles: StateFlow<List<Vehicle>> = _vehicles.asStateFlow()
+    private val _vehicle = MutableStateFlow<Vehicle?>(null)
+    val vehicle: StateFlow<Vehicle?> = _vehicle.asStateFlow()
 
-    init {
-        loadVehicles()
-    }
-
-    private fun loadVehicles() {
+    fun loadVehicle(vehicleId: Int) {
         viewModelScope.launch {
-            garageRepository.getVehicles().collect { vehiclesList ->
-                _vehicles.value = vehiclesList
-            }
+            val vehicleEntity = garageRepository.getVehicleById(vehicleId)
+            _vehicle.value = vehicleEntity
         }
     }
 }
