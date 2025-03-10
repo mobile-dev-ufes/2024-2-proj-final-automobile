@@ -12,6 +12,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ufes.automobile.domain.model.Vehicle
 
+/**
+ * Displays a card representing a vehicle, showing its details.
+ *
+ * @param vehicle The [Vehicle] data to be displayed.
+ * @param onClick The action to be performed when the card is clicked.
+ * @param modifier Modifier for styling and layout customization of the card.
+ *
+ * This composable function creates a card that presents information about a vehicle.
+ * It displays the vehicle's brand and model, its manufacturing year, and whether it is electric or combustion.
+ * If the vehicle is electric, it shows the autonomy; otherwise, it displays the tank capacity.
+ * The card is clickable and triggers the provided `onClick` action when tapped.
+ *
+ * The card is styled using Material Design components and typography.
+ *
+ * Example Usage:
+ * ```
+ * VehicleCard(
+ *     vehicle = Vehicle(brand = "Tesla", model = "Model S", manufacturingYear = 2023, isElectric = true, autonomy = 600),
+ *     onClick = { println("Vehicle card clicked!") }
+ * )
+ * ```
+ */
 @Composable
 fun VehicleCard(
     vehicle: Vehicle,

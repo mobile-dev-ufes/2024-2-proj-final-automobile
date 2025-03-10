@@ -8,6 +8,15 @@ import com.ufes.automobile.domain.repository.GarageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * Implementation of the [GarageRepository] interface.
+ *
+ * This class interacts with the [VehicleDao] to perform database operations
+ * related to vehicles. It provides methods for retrieving, adding, deleting,
+ * and getting vehicles by their ID.
+ *
+ * @property vehicleDao The Data Access Object (DAO) for vehicle entities.
+ */
 class GarageRepositoryImpl(private val vehicleDao: VehicleDao) : GarageRepository {
     override suspend fun getVehicles(): Flow<List<Vehicle>> {
         return vehicleDao.getAllVehicles().map { entities ->

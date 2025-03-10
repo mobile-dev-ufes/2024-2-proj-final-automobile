@@ -8,6 +8,11 @@ import androidx.room.Update
 import com.ufes.automobile.data.local.entity.VehicleEntity
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object (DAO) interface for interacting with the 'vehicles' table in the database.
+ * This interface provides methods for performing CRUD (Create, Read, Update, Delete) operations
+ * on VehicleEntity objects.
+ */
 @Dao
 interface VehicleDao {
     @Insert

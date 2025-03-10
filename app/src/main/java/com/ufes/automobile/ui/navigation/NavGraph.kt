@@ -9,6 +9,23 @@ import com.ufes.automobile.ui.garage.GarageScreen
 import com.ufes.automobile.ui.registry.RegistryScreen
 
 
+/**
+ * [NavGraph]
+ *
+ * Defines the navigation graph for the application.
+ * It uses a [NavHost] to manage navigation between different screens.
+ *
+ * @param navController The [NavHostController] used to navigate between destinations.
+ *
+ * This function sets up the following routes:
+ *   - [Route.GarageScreen]: Displays the Garage screen, showing a list of vehicles.
+ *   - [Route.RegistryScreen]: Displays the Registry screen, likely for vehicle registration.
+ *   - [Route.DashboardScreen]: Displays the Dashboard screen for a specific vehicle, identified by its ID.
+ *     - It expects a `vehicleId` argument (an integer) to be passed in the route.
+ *     - Example of how to navigate: `navController.navigate(Route.DashboardScreen.createRoute(vehicleId))`
+ *
+ * Each route's corresponding screen is defined in its own composable function (e.g., GarageScreen, RegistryScreen, DashboardScreen).
+ */
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(

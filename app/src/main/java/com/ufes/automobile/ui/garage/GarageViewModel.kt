@@ -10,6 +10,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel class responsible for managing the UI-related data and interactions
+ * for the Garage screen. It fetches and exposes a list of vehicles from the
+ * [GarageRepository].
+ *
+ * @property garageRepository The repository responsible for providing vehicle data.
+ * Injected by Hilt.
+ */
 @HiltViewModel
 class GarageViewModel @Inject constructor(
     private val garageRepository: GarageRepository

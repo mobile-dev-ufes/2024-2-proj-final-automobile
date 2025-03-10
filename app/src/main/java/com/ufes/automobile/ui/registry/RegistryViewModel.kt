@@ -8,6 +8,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * [RegistryViewModel] is a [ViewModel] responsible for handling the logic related to registering a new vehicle.
+ * It interacts with the [GarageRepository] to save the vehicle's information.
+ *
+ * @property garageRepository The repository used to interact with the underlying data source for vehicles.
+ */
 @HiltViewModel
 class RegistryViewModel @Inject constructor(
     private val garageRepository: GarageRepository

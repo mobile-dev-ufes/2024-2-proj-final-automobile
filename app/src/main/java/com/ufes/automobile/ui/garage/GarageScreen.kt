@@ -18,6 +18,17 @@ import androidx.navigation.NavController
 import com.ufes.automobile.ui.common.VehicleCard
 import com.ufes.automobile.ui.navigation.Route
 
+
+/**
+ * [GarageScreen] composable function displays the user's garage, showing a list of vehicles.
+ *
+ * This screen fetches the list of vehicles from the [GarageViewModel] and displays them using
+ * [VehicleCard]. It also provides a button to navigate to the vehicle registration screen.
+ *
+ * @param navController The navigation controller used for screen navigation.
+ * @param viewModel The [GarageViewModel] used to fetch and manage vehicle data. Defaults to a
+ *                  [hiltViewModel] instance.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GarageScreen(

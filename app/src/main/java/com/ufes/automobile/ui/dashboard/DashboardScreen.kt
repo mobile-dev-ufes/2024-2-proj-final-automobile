@@ -33,6 +33,17 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Composable function representing the Dashboard screen of the application.
+ *
+ * This screen displays information about a selected vehicle and provides navigation
+ * to other screens related to vehicle management, such as registering recharges/refuels,
+ * registering distance traveled, registering maintenance, and viewing reports.
+ *
+ * @param vehicleId The ID of the vehicle to display information for. If null, it is assumed that there is no vehicle to display.
+ * @param navController The NavController used for navigating to other screens.
+ * @param viewModel The DashboardViewModel used to manage the vehicle data. It defaults to a Hilt provided ViewModel.
+ */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
