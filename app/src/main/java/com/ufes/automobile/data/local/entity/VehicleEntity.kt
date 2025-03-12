@@ -18,7 +18,7 @@ import com.ufes.automobile.domain.model.Vehicle
  * @property purchaseDate The timestamp (in milliseconds since epoch) when the vehicle was purchased.
  * @property isElectric `true` if the vehicle is electric, `false` otherwise.
  * @property batteryCapacity The battery capacity of the vehicle (in kWh), if it's electric. `null` if not electric.
- * @property autonomy The estimated driving range (in km) of the vehicle, if applicable. `null` if not applicable (e.g., non-electric vehicle).
+ * @property range The estimated driving range (in km) of the vehicle, if applicable. `null` if not applicable (e.g., non-electric vehicle).
  * @property tankCapacity The fuel tank capacity (in liters) of the vehicle, if applicable. `null` if not applicable (e.g., electric vehicle).
  */
 @Entity(tableName = "vehicles")
@@ -30,7 +30,7 @@ data class VehicleEntity(
     val purchaseDate: Long,
     val isElectric: Boolean,
     val batteryCapacity: Float?,
-    val autonomy: Float?,
+    val range: Float?,
     val tankCapacity: Float?
 )
 
@@ -43,7 +43,7 @@ fun VehicleEntity.toDomainModel(): Vehicle {
         purchaseDate = purchaseDate,
         isElectric = isElectric,
         batteryCapacity = batteryCapacity,
-        autonomy = autonomy,
+        range = range,
         tankCapacity = tankCapacity
     )
 }
@@ -57,7 +57,7 @@ fun Vehicle.toEntity(): VehicleEntity {
         purchaseDate = purchaseDate,
         isElectric = isElectric,
         batteryCapacity = batteryCapacity,
-        autonomy = autonomy,
+        range = range,
         tankCapacity = tankCapacity
     )
 }

@@ -21,7 +21,7 @@ import com.ufes.automobile.domain.model.Vehicle
  *
  * This composable function creates a card that presents information about a vehicle.
  * It displays the vehicle's brand and model, its manufacturing year, and whether it is electric or combustion.
- * If the vehicle is electric, it shows the autonomy; otherwise, it displays the tank capacity.
+ * If the vehicle is electric, it shows the range; otherwise, it displays the tank capacity.
  * The card is clickable and triggers the provided `onClick` action when tapped.
  *
  * The card is styled using Material Design components and typography.
@@ -29,7 +29,7 @@ import com.ufes.automobile.domain.model.Vehicle
  * Example Usage:
  * ```
  * VehicleCard(
- *     vehicle = Vehicle(brand = "Tesla", model = "Model S", manufacturingYear = 2023, isElectric = true, autonomy = 600),
+ *     vehicle = Vehicle(brand = "Tesla", model = "Model S", manufacturingYear = 2023, isElectric = true, range = 600),
  *     onClick = { println("Vehicle card clicked!") }
  * )
  * ```
@@ -58,20 +58,20 @@ fun VehicleCard(
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
-                text = if (vehicle.isElectric) "Elétrico" else "Combustão",
+                text = if (vehicle.isElectric) "Electric" else "Combustion",
                 style = MaterialTheme.typography.bodySmall
             )
             if(vehicle.isElectric) {
-                vehicle.autonomy?.let {
+                vehicle.range?.let {
                     Text(
-                        text = "Autonomia: $it km",
+                        text = "Range: $it km",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
             } else {
                 vehicle.tankCapacity?.let {
                     Text(
-                        text = "Tanque: $it L",
+                        text = "Tank: $it L",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

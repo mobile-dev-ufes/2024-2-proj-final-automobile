@@ -25,7 +25,7 @@ class RegistryViewModel @Inject constructor(
         purchaseDate: Long,
         isElectric: Boolean,
         batteryCapacity: Float?,
-        autonomy: Float?,
+        range: Float?,
         tankCapacity: Float?
     ) {
         viewModelScope.launch {
@@ -37,7 +37,7 @@ class RegistryViewModel @Inject constructor(
                 purchaseDate = purchaseDate,
                 isElectric = isElectric,
                 batteryCapacity = if (isElectric) batteryCapacity else null,
-                autonomy = if (isElectric) autonomy else null,
+                range = if (isElectric) range else null,
                 tankCapacity = if (!isElectric) tankCapacity else null
             )
             garageRepository.addVehicle(vehicle)

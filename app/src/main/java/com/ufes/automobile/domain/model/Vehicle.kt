@@ -10,7 +10,7 @@ package com.ufes.automobile.domain.model
  * @property purchaseDate The timestamp (in milliseconds since epoch) when the vehicle was purchased.
  * @property isElectric Indicates whether the vehicle is electric (true) or not (false).
  * @property batteryCapacity The battery capacity of the vehicle in kWh (kilowatt-hours), if it's electric. Null otherwise.
- * @property autonomy The estimated range (in kilometers or miles, depending on the context) the vehicle can travel on a full charge or tank. Null if not applicable (e.g. not an electric vehicle or a combustion vehicle)
+ * @property range The estimated range (in kilometers or miles, depending on the context) the vehicle can travel on a full charge or tank. Null if not applicable (e.g. not an electric vehicle or a combustion vehicle)
  * @property tankCapacity The fuel tank capacity of the vehicle in liters or gallons, if it's a combustion vehicle. Null otherwise.
  */
 data class Vehicle(
@@ -21,6 +21,6 @@ data class Vehicle(
     val purchaseDate: Long,
     val isElectric: Boolean,
     val batteryCapacity: Float?,
-    val autonomy: Float?,
+    val range: Float?,
     val tankCapacity: Float?
 )

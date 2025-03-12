@@ -111,9 +111,9 @@ fun DashboardScreen(
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
-                            vehicle.autonomy?.let {
+                            vehicle.range?.let {
                                 Text(
-                                    text = "Autonomy: $it km",
+                                    text = "Range: $it km",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
@@ -132,14 +132,14 @@ fun DashboardScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(
-                        onClick = { navController.navigate(Route.RegistryScreen.route) },
+                        onClick = { navController.navigate(Route.RechargeScreen.createRoute(vehicle.id)) },
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text(if (vehicle.isElectric) "Register Recharge" else "Registry Refuel")
                     }
 
                     Button(
-                        onClick = { navController.navigate(Route.GarageScreen.route) },
+                        onClick = { navController.navigate(Route.DisplacementScreen.createRoute(vehicle.id)) },
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text("Register Distance Travelled")
@@ -150,7 +150,7 @@ fun DashboardScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(
-                        onClick = { navController.navigate(Route.GarageScreen.route) },
+                        onClick = { navController.navigate(Route.MaintenanceScreen.createRoute(vehicle.id)) },
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text("Register Maintenance")
