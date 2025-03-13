@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.ufes.automobile.ui.auth.LoginScreen
 import com.ufes.automobile.ui.dashboard.DashboardScreen
 import com.ufes.automobile.ui.displacement.DisplacementScreen
 import com.ufes.automobile.ui.garage.GarageScreen
@@ -30,10 +31,10 @@ import com.ufes.automobile.ui.registry.RegistryScreen
 - * Each route's corresponding screen is defined in its own composable function (e.g., GarageScreen, RegistryScreen, DashboardScreen).
 - */
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, startDestination: String) {
     NavHost(
         navController = navController,
-        startDestination = Route.GarageScreen.route
+        startDestination = startDestination
     ) {
         composable(Route.GarageScreen.route) {
             GarageScreen(navController = navController)
@@ -56,6 +57,9 @@ fun NavGraph(navController: NavHostController) {
         composable(Route.RechargeScreen.route) { backStackEntry ->
             val vehicleId = backStackEntry.arguments?.getString("vehicleId")?.toInt()
             RechargeScreen(vehicleId = vehicleId, navController = navController)
+        }
+        composable(Route.LoginScreen.route) {
+            LoginScreen(navController = navController)
         }
     }
 }

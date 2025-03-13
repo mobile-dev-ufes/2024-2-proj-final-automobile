@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "718367844513",
+    "project_id": "automobile-2a30e",
+    "storage_bucket": "automobile-2a30e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718367844513:android:e6f3e25deb8772c76068e0",
+        "android_client_info": {
+          "package_name": "com.ufes.automobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmMXKGsxavXbT8N83S1nzGkUkbY_3gda8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

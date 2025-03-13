@@ -35,4 +35,5 @@ sealed class Route(val route: String) {
     data object RechargeScreen : Route("recharge/{vehicleId}") {
         fun createRoute(vehicleId: Int) = "recharge/$vehicleId"
     }
+    data object LoginScreen : Route("login")
 }
