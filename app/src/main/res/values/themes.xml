@@ -2,4 +2,9 @@
 <resources>
 
     <style name="Theme.AutoMobile" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--    Splash Screen-->
+    <style name="Theme.AutoMobile.Splash" parent="Theme.AutoMobile">
+        <item name="android:windowSplashScreenBackground">#0C45A0</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+    </style>
 </resources>
