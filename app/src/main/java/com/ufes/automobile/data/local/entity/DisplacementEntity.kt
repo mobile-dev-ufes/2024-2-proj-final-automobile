@@ -3,6 +3,7 @@ package com.ufes.automobile.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Index
 
 /**
  * Represents a displacement record in the local database.
@@ -28,7 +29,8 @@ import androidx.room.PrimaryKey
         parentColumns = ["id"],
         childColumns = ["vehicleId"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["vehicleId"])]
 )
 data class DisplacementEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,

@@ -57,8 +57,8 @@ import com.ufes.automobile.data.local.entity.RechargeEntity
         MaintenanceEntity::class,
         RechargeEntity::class
     ],
-    version = 3,
-    exportSchema = true
+    version = 4,
+    exportSchema = false
 )
 abstract class AutoMobileDatabase : RoomDatabase() {
     abstract fun vehicleDao(): VehicleDao

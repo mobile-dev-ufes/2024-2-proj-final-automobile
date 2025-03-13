@@ -3,6 +3,7 @@ package com.ufes.automobile.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Index
 
 /**
  * Represents a recharge record in the local database.
@@ -27,7 +28,8 @@ import androidx.room.PrimaryKey
         parentColumns = ["id"],
         childColumns = ["vehicleId"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["vehicleId"])]
 )
 data class RechargeEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
