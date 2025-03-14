@@ -1,6 +1,6 @@
 package com.ufes.automobile.ui.garage
 
-import androidx.compose.foundation.background
+import android.content.res.Configuration
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -12,27 +12,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ufes.automobile.domain.model.Vehicle
 import com.ufes.automobile.ui.common.VehicleCard
 import com.ufes.automobile.ui.navigation.Route
+import com.ufes.automobile.ui.theme.AutoMobileTheme
 
 
-/**
- * [GarageScreen] composable function displays the user's garage, showing a list of vehicles.
- *
- * This screen fetches the list of vehicles from the [GarageViewModel] and displays them using
- * [VehicleCard]. It also provides a button to navigate to the vehicle registration screen.
- *
- * @param navController The navigation controller used for screen navigation.
- * @param viewModel The [GarageViewModel] used to fetch and manage vehicle data. Defaults to a
- *                  [hiltViewModel] instance.
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GarageScreen(
     navController: NavController,
@@ -40,19 +32,41 @@ fun GarageScreen(
 ) {
     val vehicles by viewModel.vehicles.collectAsState()
 
+    GarageContent(
+        vehicles = vehicles,
+        onAddClick = { navController.navigate(Route.RegistryScreen.route) },
+        onVehicleClick = { vehicleId ->
+            navController.navigate(Route.DashboardScreen.createRoute(vehicleId.toInt()))
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GarageContent(
+    vehicles: List<Vehicle>,
+    onAddClick: () -> Unit,
+    onVehicleClick: (String) -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "My Garage") }
+                title = { Text(text = "My Garage") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
             )
-        }, floatingActionButton = {
+        },
+        floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    navController.navigate(Route.RegistryScreen.route)
-                },
+                onClick = onAddClick,
                 containerColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Vehicle", tint = MaterialTheme.colorScheme.onPrimaryContainer)
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Add Vehicle",
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             }
         },
         containerColor = MaterialTheme.colorScheme.primary
@@ -63,11 +77,45 @@ fun GarageScreen(
             items(vehicles) { vehicle ->
                 VehicleCard(
                     vehicle = vehicle,
-                    onClick = {
-                        navController.navigate(Route.DashboardScreen.createRoute(vehicle.id))
-                    }
+                    onClick = { onVehicleClick(vehicle.id.toString()) }
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun GarageContentPreview() {
+    AutoMobileTheme {
+        GarageContent(
+            vehicles = listOf(
+                Vehicle(
+                    1,
+                    "Toyota",
+                    "Corolla",
+                    2024,
+                    purchaseDate = 2024,
+                    isElectric = false,
+                    batteryCapacity = null,
+                    range = null,
+                    tankCapacity = 50f
+                ),
+                Vehicle(
+                    2,
+                    "BYD",
+                    "Dolphin Mini",
+                    2025,
+                    purchaseDate = 2025,
+                    isElectric = true,
+                    batteryCapacity = 38f,
+                    range = 400f,
+                    tankCapacity = null
+                )
+            ),
+            onAddClick = {},
+            onVehicleClick = {}
+        )
     }
 }

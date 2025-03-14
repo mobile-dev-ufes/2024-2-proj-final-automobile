@@ -1,5 +1,6 @@
 package com.ufes.automobile.ui.registry
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,34 +27,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ufes.automobile.ui.common.parseDate
-import java.util.Calendar
+import com.ufes.automobile.ui.theme.AutoMobileTheme
 
-/**
- * RegistryScreen Composable function.
- *
- * This screen allows the user to register a new vehicle by providing its details.
- * It includes fields for brand, model, manufacturing year, purchase date, vehicle type (electric/combustion),
- * battery capacity/tank capacity, and range.
- *
- * @param navController The NavHostController used for navigation.
- * @param viewModel The RegistryViewModel instance used for handling vehicle data. Defaults to a Hilt-provided instance.
- *
- * The function uses the following states:
- * - `brand`: The brand of the vehicle (String).
- * - `model`: The model of the vehicle (String).
- * - `manufacturingYear`: The manufacturing year of the vehicle (String, digits only).
- * - `purchaseDate`: The purchase date of the vehicle (String, format: dd/mm/yyyy).
- * - `isElectric`: A boolean */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistryScreen(
     navController: NavHostController,
     viewModel: RegistryViewModel = hiltViewModel()
-    ) {
+) {
     var brand by remember { mutableStateOf("") }
     var model by remember { mutableStateOf("") }
     var manufacturingYear by remember { mutableStateOf("") }
@@ -63,12 +48,70 @@ fun RegistryScreen(
     var range by remember { mutableStateOf("") }
     var tankCapacity by remember { mutableStateOf("") }
 
+    RegistryContent(
+        brand = brand,
+        onBrandChange = { brand = it },
+        model = model,
+        onModelChange = { model = it },
+        manufacturingYear = manufacturingYear,
+        onManufacturingYearChange = { manufacturingYear = it },
+        purchaseDate = purchaseDate,
+        onPurchaseDateChange = { purchaseDate = it },
+        isElectric = isElectric,
+        onIsElectricChange = { isElectric = it },
+        batteryCapacity = batteryCapacity,
+        onBatteryCapacityChange = { batteryCapacity = it },
+        range = range,
+        onRangeChange = { range = it },
+        tankCapacity = tankCapacity,
+        onTankCapacityChange = { tankCapacity = it },
+        onSaveClick = {
+            viewModel.saveVehicle(
+                brand = brand,
+                model = model,
+                manufacturingYear = manufacturingYear.toIntOrNull() ?: 0,
+                purchaseDate = parseDate(purchaseDate),
+                isElectric = isElectric,
+                batteryCapacity = batteryCapacity.toFloatOrNull(),
+                range = range.toFloatOrNull(),
+                tankCapacity = tankCapacity.toFloatOrNull()
+            )
+            navController.popBackStack()
+        },
+        onBackClick = { navController.popBackStack() },
+        isSaveEnabled = brand.isNotBlank() && model.isNotBlank() && manufacturingYear.isNotBlank() && purchaseDate.isNotBlank()
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RegistryContent(
+    brand: String,
+    onBrandChange: (String) -> Unit,
+    model: String,
+    onModelChange: (String) -> Unit,
+    manufacturingYear: String,
+    onManufacturingYearChange: (String) -> Unit,
+    purchaseDate: String,
+    onPurchaseDateChange: (String) -> Unit,
+    isElectric: Boolean,
+    onIsElectricChange: (Boolean) -> Unit,
+    batteryCapacity: String,
+    onBatteryCapacityChange: (String) -> Unit,
+    range: String,
+    onRangeChange: (String) -> Unit,
+    tankCapacity: String,
+    onTankCapacityChange: (String) -> Unit,
+    onSaveClick: () -> Unit,
+    onBackClick: () -> Unit,
+    isSaveEnabled: Boolean
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Vehicle Registry") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -88,26 +131,26 @@ fun RegistryScreen(
         ) {
             OutlinedTextField(
                 value = brand,
-                onValueChange = { brand = it },
+                onValueChange = onBrandChange,
                 label = { Text("Brand") },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = model,
-                onValueChange = { model = it },
+                onValueChange = onModelChange,
                 label = { Text("Model") },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = manufacturingYear,
-                onValueChange = { manufacturingYear = it.filter { char -> char.isDigit() } },
+                onValueChange = { onManufacturingYearChange(it.filter { char -> char.isDigit() }) },
                 label = { Text("Manufacturing Year") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = purchaseDate,
-                onValueChange = { purchaseDate = it },
+                onValueChange = onPurchaseDateChange,
                 label = { Text("Purchase Date (dd/mm/yyyy)") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -118,21 +161,21 @@ fun RegistryScreen(
                 Text("Vehicle Type")
                 Switch(
                     checked = isElectric,
-                    onCheckedChange = { isElectric = it }
+                    onCheckedChange = onIsElectricChange
                 )
                 Text(if (isElectric) "Electric" else "Combustion")
             }
             if (isElectric) {
                 OutlinedTextField(
                     value = batteryCapacity,
-                    onValueChange = { batteryCapacity = it.filter { char -> char.isDigit() || char == '.' } },
+                    onValueChange = { onBatteryCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
                     label = { Text("Battery Capacity (kWh)") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = range,
-                    onValueChange = { range = it.filter { char -> char.isDigit() || char == '.' } },
+                    onValueChange = { onRangeChange(it.filter { char -> char.isDigit() || char == '.' }) },
                     label = { Text("Range (km)") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth()
@@ -140,34 +183,51 @@ fun RegistryScreen(
             } else {
                 OutlinedTextField(
                     value = tankCapacity,
-                    onValueChange = { tankCapacity = it.filter { char -> char.isDigit() || char == '.' } },
+                    onValueChange = { onTankCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
                     label = { Text("Tank Capacity (L)") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             Button(
-                onClick = {
-                    viewModel.saveVehicle(
-                        brand = brand,
-                        model = model,
-                        manufacturingYear = manufacturingYear.toIntOrNull() ?: 0,
-                        purchaseDate = parseDate(purchaseDate),
-                        isElectric = isElectric,
-                        batteryCapacity = batteryCapacity.toFloatOrNull(),
-                        range = range.toFloatOrNull(),
-                        tankCapacity = tankCapacity.toFloatOrNull()
-                    )
-                    navController.popBackStack()
-                },
+                onClick = onSaveClick,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = brand.isNotBlank() && model.isNotBlank() && manufacturingYear.isNotBlank() && purchaseDate.isNotBlank(),
+                enabled = isSaveEnabled,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme.colorScheme.onSecondary
                 )
             ) {
                 Text("Save")
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun RegistryContentPreview() {
+    AutoMobileTheme {
+        RegistryContent(
+            brand = "Toyota",
+            onBrandChange = {},
+            model = "Corolla",
+            onModelChange = {},
+            manufacturingYear = "2023",
+            onManufacturingYearChange = {},
+            purchaseDate = "01/01/2023",
+            onPurchaseDateChange = {},
+            isElectric = false,
+            onIsElectricChange = {},
+            batteryCapacity = "",
+            onBatteryCapacityChange = {},
+            range = "",
+            onRangeChange = {},
+            tankCapacity = "50.0",
+            onTankCapacityChange = {},
+            onSaveClick = {},
+            onBackClick = {},
+            isSaveEnabled = true
+        )
     }
 }

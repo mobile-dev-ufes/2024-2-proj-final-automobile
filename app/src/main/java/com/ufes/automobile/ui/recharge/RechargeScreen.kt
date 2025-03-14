@@ -1,5 +1,6 @@
 package com.ufes.automobile.ui.recharge
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -8,25 +9,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ufes.automobile.ui.common.parseDate
+import com.ufes.automobile.ui.theme.AutoMobileTheme
 
-/**
- * Composable function for the Recharge Screen.
- *
- * This screen allows the user to register a recharge or refueling event for a vehicle.
- * It supports both electric and combustion vehicles, allowing the user to input the
- * amount, cost, and date of the event.
- *
- * @param vehicleId The ID of the vehicle for which the recharge/refueling is being registered.
- *                  If null, the recharge won't be saved and the save button will do nothing.
- * @param navController The NavController used for navigation within the app.
- * @param viewModel The RechargeViewModel responsible for handling the logic of the recharge.
- *                  It uses Hilt to inject the view model.
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RechargeScreen(
     vehicleId: Int?,
@@ -38,12 +27,55 @@ fun RechargeScreen(
     var date by remember { mutableStateOf("") }
     var isElectric by remember { mutableStateOf(false) }
 
+    RechargeContent(
+        vehicleId = vehicleId,
+        amount = amount,
+        onAmountChange = { amount = it },
+        cost = cost,
+        onCostChange = { cost = it },
+        date = date,
+        onDateChange = { date = it },
+        isElectric = isElectric,
+        onIsElectricChange = { isElectric = it },
+        onSaveClick = {
+            vehicleId?.let {
+                viewModel.saveRecharge(
+                    vehicleId = it,
+                    isElectric = isElectric,
+                    amount = amount.toFloatOrNull() ?: 0f,
+                    cost = cost.toFloatOrNull() ?: 0f,
+                    date = parseDate(date)
+                )
+                navController.popBackStack()
+            }
+        },
+        isSaveEnabled = amount.isNotBlank() && cost.isNotBlank() && date.isNotBlank(),
+        onBackClick = { navController.popBackStack() }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RechargeContent(
+    vehicleId: Int?,
+    amount: String,
+    onAmountChange: (String) -> Unit,
+    cost: String,
+    onCostChange: (String) -> Unit,
+    date: String,
+    onDateChange: (String) -> Unit,
+    isElectric: Boolean,
+    onIsElectricChange: (Boolean) -> Unit,
+    onSaveClick: () -> Unit,
+    isSaveEnabled: Boolean,
+    onBackClick: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(if (isElectric) "Recharge Registry" else "Refueling Registry") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
@@ -64,48 +96,59 @@ fun RechargeScreen(
                 Text("Type")
                 Switch(
                     checked = isElectric,
-                    onCheckedChange = { isElectric = it }
+                    onCheckedChange = onIsElectricChange
                 )
                 Text(if (isElectric) "Electric" else "Combustion")
             }
             OutlinedTextField(
                 value = amount,
-                onValueChange = { amount = it.filter { char -> char.isDigit() || char == '.' } },
+                onValueChange = onAmountChange,
                 label = { Text(if (isElectric) "Amount (kWh)" else "Amount (L)") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = cost,
-                onValueChange = { cost = it.filter { char -> char.isDigit() || char == '.' } },
+                onValueChange = onCostChange,
                 label = { Text("Cost ($)") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = date,
-                onValueChange = { date = it },
+                onValueChange = onDateChange,
                 label = { Text("Date (dd/mm/aaaa)") },
                 modifier = Modifier.fillMaxWidth()
             )
             Button(
-                onClick = {
-                    vehicleId?.let {
-                        viewModel.saveRecharge(
-                            vehicleId = it,
-                            isElectric = isElectric,
-                            amount = amount.toFloatOrNull() ?: 0f,
-                            cost = cost.toFloatOrNull() ?: 0f,
-                            date = parseDate(date)
-                        )
-                        navController.popBackStack()
-                    }
-                },
+                onClick = onSaveClick,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = amount.isNotBlank() && cost.isNotBlank() && date.isNotBlank()
+                enabled = isSaveEnabled
             ) {
                 Text("Save")
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun RechargeContentPreview() {
+    AutoMobileTheme {
+        RechargeContent(
+            vehicleId = 1,
+            amount = "50.0",
+            onAmountChange = {},
+            cost = "75.50",
+            onCostChange = {},
+            date = "01/01/2023",
+            onDateChange = {},
+            isElectric = false,
+            onIsElectricChange = {},
+            onSaveClick = {},
+            isSaveEnabled = true,
+            onBackClick = {}
+        )
     }
 }

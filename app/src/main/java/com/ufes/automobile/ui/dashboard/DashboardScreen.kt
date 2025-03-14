@@ -1,6 +1,6 @@
 package com.ufes.automobile.ui.dashboard
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,26 +25,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ufes.automobile.domain.model.Vehicle
 import com.ufes.automobile.ui.navigation.Route
+import com.ufes.automobile.ui.theme.AutoMobileTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/**
- * Composable function representing the Dashboard screen of the application.
- *
- * This screen displays information about a selected vehicle and provides navigation
- * to other screens related to vehicle management, such as registering recharges/refuels,
- * registering distance traveled, registering maintenance, and viewing reports.
- *
- * @param vehicleId The ID of the vehicle to display information for. If null, it is assumed that there is no vehicle to display.
- * @param navController The NavController used for navigating to other screens.
- * @param viewModel The DashboardViewModel used to manage the vehicle data. It defaults to a Hilt provided ViewModel.
- */
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     vehicleId: Int?,
@@ -57,21 +48,41 @@ fun DashboardScreen(
 
     val vehicle = viewModel.vehicle.collectAsState().value
 
+    DashboardContent(
+        vehicle = vehicle,
+        onRechargeClick = { navController.navigate(Route.RechargeScreen.createRoute(vehicle?.id ?: 0)) },
+        onDisplacementClick = { navController.navigate(Route.DisplacementScreen.createRoute(vehicle?.id ?: 0)) },
+        onMaintenanceClick = { navController.navigate(Route.MaintenanceScreen.createRoute(vehicle?.id ?: 0)) },
+        onReportsClick = { navController.navigate(Route.GarageScreen.route) },
+        onBackClick = { navController.popBackStack() }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DashboardContent(
+    vehicle: Vehicle?,
+    onRechargeClick: () -> Unit,
+    onDisplacementClick: () -> Unit,
+    onMaintenanceClick: () -> Unit,
+    onReportsClick: () -> Unit,
+    onBackClick: () -> Unit
+) {
     Scaffold(
         topBar = {
-             TopAppBar(
-                 title = { Text(text = "Vehicle Dashboard") },
-                    navigationIcon = {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
+            TopAppBar(
+                title = { Text(text = "Vehicle Dashboard") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
-             )
+                }
+            )
         }
-    ) {  paddingValues ->
+    ) { paddingValues ->
         if (vehicle != null) {
             Column(
                 modifier = Modifier
@@ -132,14 +143,13 @@ fun DashboardScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(
-                        onClick = { navController.navigate(Route.RechargeScreen.createRoute(vehicle.id)) },
+                        onClick = onRechargeClick,
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text(if (vehicle.isElectric) "Register Recharge" else "Registry Refuel")
                     }
-
                     Button(
-                        onClick = { navController.navigate(Route.DisplacementScreen.createRoute(vehicle.id)) },
+                        onClick = onDisplacementClick,
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text("Register Distance Travelled")
@@ -150,14 +160,13 @@ fun DashboardScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(
-                        onClick = { navController.navigate(Route.MaintenanceScreen.createRoute(vehicle.id)) },
+                        onClick = onMaintenanceClick,
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text("Register Maintenance")
                     }
-
                     Button(
-                        onClick = { navController.navigate(Route.GarageScreen.route) },
+                        onClick = onReportsClick,
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
                     ) {
                         Text("See Reports")
@@ -174,5 +183,31 @@ fun DashboardScreen(
                 CircularProgressIndicator()
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun DashboardContentPreview() {
+    AutoMobileTheme {
+        DashboardContent(
+            Vehicle(
+                1,
+                "Toyota",
+                "Corolla",
+                2024,
+                purchaseDate = 2024,
+                isElectric = false,
+                batteryCapacity = null,
+                range = null,
+                tankCapacity = 50f
+            ),
+            onRechargeClick = {},
+            onDisplacementClick = {},
+            onMaintenanceClick = {},
+            onReportsClick = {},
+            onBackClick = {}
+        )
     }
 }
