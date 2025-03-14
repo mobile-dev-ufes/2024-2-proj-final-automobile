@@ -1,39 +1,23 @@
 package com.ufes.automobile.ui.common
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ufes.automobile.domain.model.Vehicle
 
-/**
- * Displays a card representing a vehicle, showing its details.
- *
- * @param vehicle The [Vehicle] data to be displayed.
- * @param onClick The action to be performed when the card is clicked.
- * @param modifier Modifier for styling and layout customization of the card.
- *
- * This composable function creates a card that presents information about a vehicle.
- * It displays the vehicle's brand and model, its manufacturing year, and whether it is electric or combustion.
- * If the vehicle is electric, it shows the range; otherwise, it displays the tank capacity.
- * The card is clickable and triggers the provided `onClick` action when tapped.
- *
- * The card is styled using Material Design components and typography.
- *
- * Example Usage:
- * ```
- * VehicleCard(
- *     vehicle = Vehicle(brand = "Tesla", model = "Model S", manufacturingYear = 2023, isElectric = true, range = 600),
- *     onClick = { println("Vehicle card clicked!") }
- * )
- * ```
- */
 @Composable
 fun VehicleCard(
     vehicle: Vehicle,
@@ -41,41 +25,78 @@ fun VehicleCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
             .padding(8.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (vehicle.isElectric) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
             Text(
-                text = "${vehicle.brand} ${vehicle.model}",
-                style = MaterialTheme.typography.titleMedium
+                text = "${vehicle.brand} ${vehicle.model} (${vehicle.manufacturingYear})",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Year: ${vehicle.manufacturingYear}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "Ano: ${vehicle.manufacturingYear}",
-                style = MaterialTheme.typography.bodyMedium
+                text = if (vehicle.isElectric) "Type: Electric" else "Type: Combustion",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
             )
-            Text(
-                text = if (vehicle.isElectric) "Electric" else "Combustion",
-                style = MaterialTheme.typography.bodySmall
-            )
-            if(vehicle.isElectric) {
+            Spacer(modifier = Modifier.height(4.dp))
+            if (vehicle.isElectric) {
                 vehicle.range?.let {
                     Text(
                         text = "Range: $it km",
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {
                 vehicle.tankCapacity?.let {
                     Text(
-                        text = "Tank: $it L",
-                        style = MaterialTheme.typography.bodySmall
+                        text = "Tank Capacity: $it L",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun PreviewVehicleCard() {
+    VehicleCard(
+        vehicle = Vehicle(
+            1,
+            "Toyota",
+            "Corolla",
+            2024,
+            purchaseDate = 2024,
+            isElectric = false,
+            batteryCapacity = null,
+            range = null,
+            tankCapacity = 50f
+        ),
+        onClick = {}
+    )
 }
