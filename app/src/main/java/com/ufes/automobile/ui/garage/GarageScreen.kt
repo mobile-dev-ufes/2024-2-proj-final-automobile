@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ufes.automobile.domain.model.Vehicle
+import com.ufes.automobile.ui.auth.AuthViewModel
 import com.ufes.automobile.ui.common.VehicleCard
 import com.ufes.automobile.ui.navigation.Route
 import com.ufes.automobile.ui.theme.AutoMobileTheme
@@ -46,6 +49,7 @@ import com.ufes.automobile.ui.theme.AutoMobileTheme
 @Composable
 fun GarageScreen(
     navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel(),
     viewModel: GarageViewModel = hiltViewModel()
 ) {
     val vehicles by viewModel.vehicles.collectAsState()
@@ -55,6 +59,10 @@ fun GarageScreen(
         onAddClick = { navController.navigate(Route.RegistryScreen.route) },
         onVehicleClick = { vehicleId ->
             navController.navigate(Route.DashboardScreen.createRoute(vehicleId.toInt()))
+        },
+        onLogoutClick = {
+            authViewModel.logout()
+            navController.navigate(Route.LoginScreen.route)
         }
     )
 }
@@ -64,7 +72,8 @@ fun GarageScreen(
 fun GarageContent(
     vehicles: List<Vehicle>,
     onAddClick: () -> Unit,
-    onVehicleClick: (String) -> Unit
+    onVehicleClick: (String) -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -75,6 +84,15 @@ fun GarageContent(
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
+                },
+                actions = {
+                    IconButton(onClick = onLogoutClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
@@ -191,7 +209,8 @@ fun GarageContentPreview() {
                 )
             ),
             onAddClick = {},
-            onVehicleClick = {}
+            onVehicleClick = {},
+            onLogoutClick = {}
         )
     }
 }
@@ -204,7 +223,8 @@ fun GarageContentEmptyPreview() {
         GarageContent(
             vehicles = emptyList(),
             onAddClick = {},
-            onVehicleClick = {}
+            onVehicleClick = {},
+            onLogoutClick = {}
         )
     }
 }

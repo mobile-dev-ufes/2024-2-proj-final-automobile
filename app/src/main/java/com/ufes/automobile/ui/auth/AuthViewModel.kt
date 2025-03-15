@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class AuthState(
+    val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
     val errorMessage: String? = null
 )
@@ -24,25 +25,51 @@ class AuthViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    _authState.value = AuthState(isSuccess = true)
-                }
-                .addOnFailureListener { e ->
-                    _authState.value = AuthState(errorMessage = "Login failed: ${e.message}")
-                }
+            _authState.value = AuthState(isLoading = true)
+            try{
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
+                        _authState.value = AuthState(isSuccess = true)
+                    }
+                    .addOnFailureListener { e ->
+                        _authState.value = AuthState(errorMessage = "Login failed: ${e.message}")
+                    }
+
+            } catch (e: Exception) {
+                _authState.value = AuthState(errorMessage = "Unexpected error: ${e.message}")
+            }
         }
     }
 
     fun register(email: String, password: String) {
         viewModelScope.launch {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    _authState.value = AuthState(isSuccess = true)
-                }
-                .addOnFailureListener { e ->
-                    _authState.value = AuthState(errorMessage = "Register failed: ${e.message}")
-                }
+            _authState.value = AuthState(isLoading = true)
+            try {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
+                        _authState.value = AuthState(isSuccess = true)
+                    }
+                    .addOnFailureListener { e ->
+                        _authState.value = AuthState(errorMessage = "Register failed: ${e.message}")
+                    }
+            } catch (e: Exception) {
+                TODO("Not yet implemented")
+            }
         }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            try {
+                auth.signOut()
+                _authState.value = AuthState(isSuccess = true)
+            } catch (e: Exception) {
+                _authState.value = AuthState(errorMessage = "Logout failed: ${e.message}")
+            }
+        }
+    }
+
+    fun resetAuthState() {
+        _authState.value = null
     }
 }
