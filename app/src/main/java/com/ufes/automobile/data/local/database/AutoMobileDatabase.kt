@@ -2,14 +2,20 @@ package com.ufes.automobile.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.ufes.automobile.data.local.dao.AccidentDao
 import com.ufes.automobile.data.local.dao.DisplacementDao
+import com.ufes.automobile.data.local.dao.InsuranceDao
 import com.ufes.automobile.data.local.dao.MaintenanceDao
+import com.ufes.automobile.data.local.dao.MaintenanceReminderDao
 import com.ufes.automobile.data.local.dao.RechargeDao
 import com.ufes.automobile.data.local.dao.VehicleDao
 import com.ufes.automobile.data.local.entity.DisplacementEntity
 import com.ufes.automobile.data.local.entity.VehicleEntity
 import com.ufes.automobile.data.local.entity.MaintenanceEntity
 import com.ufes.automobile.data.local.entity.RechargeEntity
+import com.ufes.automobile.data.local.entity.AccidentEntity
+import com.ufes.automobile.data.local.entity.InsuranceEntity
+import com.ufes.automobile.data.local.entity.MaintenanceReminderEntity
 
 /**
  * `AutoMobileDatabase` is the Room database for the application, responsible for managing the
@@ -55,9 +61,12 @@ import com.ufes.automobile.data.local.entity.RechargeEntity
         VehicleEntity::class,
         DisplacementEntity::class,
         MaintenanceEntity::class,
-        RechargeEntity::class
+        RechargeEntity::class,
+        AccidentEntity::class,
+        InsuranceEntity::class,
+        MaintenanceReminderEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AutoMobileDatabase : RoomDatabase() {
@@ -65,4 +74,7 @@ abstract class AutoMobileDatabase : RoomDatabase() {
     abstract fun displacementDao(): DisplacementDao
     abstract fun maintenanceDao(): MaintenanceDao
     abstract fun rechargeDao(): RechargeDao
+    abstract fun accidentDao(): AccidentDao
+    abstract fun insuranceDao(): InsuranceDao
+    abstract fun maintenanceReminderDao(): MaintenanceReminderDao
 }

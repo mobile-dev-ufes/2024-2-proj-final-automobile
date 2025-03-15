@@ -1,15 +1,24 @@
 package com.ufes.automobile.di
 
+import com.ufes.automobile.data.local.dao.AccidentDao
 import com.ufes.automobile.data.local.dao.DisplacementDao
+import com.ufes.automobile.data.local.dao.InsuranceDao
 import com.ufes.automobile.data.local.dao.MaintenanceDao
+import com.ufes.automobile.data.local.dao.MaintenanceReminderDao
 import com.ufes.automobile.data.local.dao.RechargeDao
 import com.ufes.automobile.data.local.dao.VehicleDao
+import com.ufes.automobile.data.repository.AccidentRepositoryImpl
 import com.ufes.automobile.data.repository.DisplacementRepositoryImpl
 import com.ufes.automobile.data.repository.GarageRepositoryImpl
+import com.ufes.automobile.data.repository.InsuranceRepositoryImpl
+import com.ufes.automobile.data.repository.MaintenanceReminderRepositoryImpl
 import com.ufes.automobile.data.repository.MaintenanceRepositoryImpl
 import com.ufes.automobile.data.repository.RechargeRepositoryImpl
+import com.ufes.automobile.domain.repository.AccidentRepository
 import com.ufes.automobile.domain.repository.DisplacementRepository
 import com.ufes.automobile.domain.repository.GarageRepository
+import com.ufes.automobile.domain.repository.InsuranceRepository
+import com.ufes.automobile.domain.repository.MaintenanceReminderRepository
 import com.ufes.automobile.domain.repository.MaintenanceRepository
 import com.ufes.automobile.domain.repository.RechargeRepository
 import dagger.Module
@@ -90,5 +99,29 @@ object RepositoryModule {
         rechargeDao: RechargeDao,
     ): RechargeRepository {
         return RechargeRepositoryImpl(rechargeDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccidentRepository(
+        accidentDao: AccidentDao,
+    ): AccidentRepository {
+        return AccidentRepositoryImpl(accidentDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInsuranceRepository(
+        insuranceDao: InsuranceDao,
+    ): InsuranceRepository {
+        return InsuranceRepositoryImpl(insuranceDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMaintenanceReminderRepository(
+        maintenanceReminderDao: MaintenanceReminderDao,
+    ): MaintenanceReminderRepository {
+        return MaintenanceReminderRepositoryImpl(maintenanceReminderDao)
     }
 }

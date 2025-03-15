@@ -2,8 +2,11 @@ package com.ufes.automobile.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ufes.automobile.data.local.dao.AccidentDao
 import com.ufes.automobile.data.local.dao.DisplacementDao
+import com.ufes.automobile.data.local.dao.InsuranceDao
 import com.ufes.automobile.data.local.dao.MaintenanceDao
+import com.ufes.automobile.data.local.dao.MaintenanceReminderDao
 import com.ufes.automobile.data.local.dao.RechargeDao
 import com.ufes.automobile.data.local.dao.VehicleDao
 import com.ufes.automobile.data.local.database.AutoMobileDatabase
@@ -89,5 +92,23 @@ object DatabaseModule {
     @Singleton
     fun provideRechargeDao(database: AutoMobileDatabase): RechargeDao {
         return database.rechargeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccidentDao(database: AutoMobileDatabase): AccidentDao {
+        return database.accidentDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideInsuranceDao(database: AutoMobileDatabase): InsuranceDao {
+        return database.insuranceDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMaintenanceReminderDao(database: AutoMobileDatabase): MaintenanceReminderDao {
+        return database.maintenanceReminderDao()
     }
 }
