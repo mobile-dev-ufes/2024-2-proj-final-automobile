@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.sharp.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -62,10 +64,49 @@ fun DashboardScreen(
 
     DashboardContent(
         vehicle = vehicle,
-        onRechargeClick = { navController.navigate(Route.RechargeScreen.createRoute(vehicle?.id ?: 0)) },
-        onDisplacementClick = { navController.navigate(Route.DisplacementScreen.createRoute(vehicle?.id ?: 0)) },
-        onMaintenanceClick = { navController.navigate(Route.MaintenanceScreen.createRoute(vehicle?.id ?: 0)) },
+        onRechargeClick = {
+            navController.navigate(
+                Route.RechargeScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
+        onDisplacementClick = {
+            navController.navigate(
+                Route.DisplacementScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
+        onMaintenanceClick = {
+            navController.navigate(
+                Route.MaintenanceScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
         onReportsClick = { navController.navigate(Route.GarageScreen.route) },
+        onAccidentClick = {
+            navController.navigate(
+                Route.AccidentScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
+        onInsuranceClick = {
+            navController.navigate(
+                Route.InsuranceScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
+        onMaintenanceReminderClick = {
+            navController.navigate(
+                Route.MaintenanceReminderScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
         onBackClick = { navController.popBackStack() }
     )
 }
@@ -78,6 +119,9 @@ fun DashboardContent(
     onDisplacementClick: () -> Unit,
     onMaintenanceClick: () -> Unit,
     onReportsClick: () -> Unit,
+    onAccidentClick: () -> Unit,
+    onInsuranceClick: () -> Unit,
+    onMaintenanceReminderClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -143,9 +187,11 @@ fun DashboardContent(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Purchase date: ${SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
-                                Date(vehicle.purchaseDate)
-                            )}",
+                            text = "Purchase date: ${
+                                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
+                                    Date(vehicle.purchaseDate)
+                                )
+                            }",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -203,7 +249,9 @@ fun DashboardContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = if(vehicle.isElectric) ImageVector.vectorResource(id = R.drawable.bolt) else ImageVector.vectorResource(id = R.drawable.local_gas_station),
+                                    imageVector = if (vehicle.isElectric) ImageVector.vectorResource(
+                                        id = R.drawable.bolt
+                                    ) else ImageVector.vectorResource(id = R.drawable.local_gas_station),
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -317,6 +365,113 @@ fun DashboardContent(
                             }
                         }
                     }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Button(
+                            onClick = onAccidentClick,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error,
+                                contentColor = MaterialTheme.colorScheme.onError
+                            ),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 6.dp,
+                                pressedElevation = 8.dp
+                            )
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Sharp.Warning, // sharpp
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(
+                                    text = "Accident",
+                                    fontSize = 14.sp,
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
+                        }
+                        Button(
+                            onClick = onMaintenanceReminderClick,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            ),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 6.dp,
+                                pressedElevation = 8.dp
+                            )
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.event),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(
+                                    text = "Maintenance Reminder",
+                                    fontSize = 14.sp,
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Button(
+                            onClick = onInsuranceClick,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary,
+                                contentColor = MaterialTheme.colorScheme.onSecondary
+                            ),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 6.dp,
+                                pressedElevation = 8.dp
+                            )
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.shield),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(
+                                    text = "Insurance",
+                                    fontSize = 14.sp,
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
                 }
             }
         } else {
@@ -338,7 +493,7 @@ fun DashboardContent(
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun DashboardContentPreview() {
+fun DashboardContentCombustionPreview() {
     AutoMobileTheme {
         DashboardContent(
             Vehicle(
@@ -356,6 +511,38 @@ fun DashboardContentPreview() {
             onDisplacementClick = {},
             onMaintenanceClick = {},
             onReportsClick = {},
+            onAccidentClick = {},
+            onInsuranceClick = {},
+            onMaintenanceReminderClick = {},
+            onBackClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun DashboardContentElectricPreview() {
+    AutoMobileTheme {
+        DashboardContent(
+            Vehicle(
+                1,
+                "BYD",
+                "Dolphin",
+                2024,
+                purchaseDate = 2024,
+                isElectric = true,
+                batteryCapacity = 40f,
+                range = 400f,
+                tankCapacity = null
+            ),
+            onRechargeClick = {},
+            onDisplacementClick = {},
+            onMaintenanceClick = {},
+            onReportsClick = {},
+            onAccidentClick = {},
+            onInsuranceClick = {},
+            onMaintenanceReminderClick = {},
             onBackClick = {}
         )
     }
@@ -371,6 +558,9 @@ fun DashboardContentLoadingPreview() {
             onDisplacementClick = {},
             onMaintenanceClick = {},
             onReportsClick = {},
+            onAccidentClick = {},
+            onInsuranceClick = {},
+            onMaintenanceReminderClick = {},
             onBackClick = {}
         )
     }

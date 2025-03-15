@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ufes.automobile.R
+import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
@@ -196,28 +197,11 @@ fun RechargeContent(
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
                     )
-                    OutlinedTextField(
-                        value = date,
-                        onValueChange = onDateChange,
-                        label = {
-                            Text(
-                                "Date (dd/mm/aaaa)",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.DateRange,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
+                    DatePickerField(
+                        purchaseDate = date,
+                        onPurchaseDateChange = onDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        "Date (dd/mm/aaaa)"
                     )
                 }
             }

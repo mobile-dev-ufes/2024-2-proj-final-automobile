@@ -1,4 +1,4 @@
-package com.ufes.automobile.ui.displacement
+package com.ufes.automobile.ui.accident
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,76 +25,62 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.ufes.automobile.ui.theme.AutoMobileTheme
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ufes.automobile.R
-import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
-import com.ufes.automobile.ui.theme.AutoMobileTheme
+import com.ufes.automobile.R
 
 @Composable
-fun DisplacementScreen(
-    vehicleId: Int?,
+fun AccidentScreen(
     navController: NavController,
-    viewModel: DisplacementViewModel = hiltViewModel()
+    vehicleId: Int?,
+    viewModel: AccidentViewModel = hiltViewModel()
 ) {
-    var distance by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
-    var origin by remember { mutableStateOf("") }
-    var destination by remember { mutableStateOf("") }
+    var accidentDate by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("") }
 
-    DisplacementContent(
-        distance = distance,
-        onDistanceChange = { distance = it },
-        date = date,
-        onDateChange = { date = it },
-        origin = origin,
-        onOriginChange = { origin = it },
-        destination = destination,
-        onDestinationChange = { destination = it },
+    AccidentContent(
+        accidentDate = accidentDate,
+        onAccidentDateChange = { accidentDate = it },
+        description = description,
+        onDescriptionChange = { description = it },
+        location = location,
+        onLocationChange = { location = it },
         onSaveClick = {
             vehicleId?.let {
-                viewModel.saveDisplacement(
+                viewModel.saveAccident(
                     vehicleId = it,
-                    distance = distance.toFloatOrNull() ?: 0f,
-                    date = parseDate(date),
-                    origin = origin,
-                    destination = destination
+                    description = description,
+                    location = location,
+                    date = parseDate(accidentDate)
                 )
                 navController.popBackStack()
             }
         },
-        isSaveEnabled = distance.isNotBlank() && date.isNotBlank() && origin.isNotBlank() && destination.isNotBlank(),
         onBackClick = { navController.popBackStack() }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DisplacementContent(
-    distance: String,
-    onDistanceChange: (String) -> Unit,
-    date: String,
-    onDateChange: (String) -> Unit,
-    origin: String,
-    onOriginChange: (String) -> Unit,
-    destination: String,
-    onDestinationChange: (String) -> Unit,
+fun AccidentContent(
+    accidentDate: String,
+    onAccidentDateChange: (String) -> Unit,
+    description: String,
+    onDescriptionChange: (String) -> Unit,
+    location: String,
+    onLocationChange: (String) -> Unit,
     onSaveClick: () -> Unit,
-    isSaveEnabled: Boolean,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -102,7 +88,7 @@ fun DisplacementContent(
             TopAppBar(
                 title = {
                     Text(
-                        "Displacement Registry",
+                        text = "Register Accident",
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -137,71 +123,64 @@ fun DisplacementContent(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     OutlinedTextField(
-                        value = distance,
-                        onValueChange = { onDistanceChange(it.filter { char -> char.isDigit() || char == '.' }) },
+                        value = accidentDate,
+                        onValueChange = onAccidentDateChange,
                         label = {
                             Text(
-                                "Distance (km)",
+                                "Accident Date (dd/mm/yyyy)",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         },
                         leadingIcon = {
                             Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.directions_car),
-                                contentDescription = null,
+                                imageVector = Icons.Default.DateRange,
+                                contentDescription = "Accident Date Icon",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
-                    )
-                    DatePickerField(
-                        purchaseDate = date,
-                        onPurchaseDateChange = onDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa"
-                    )
-                    OutlinedTextField(
-                        value = origin,
-                        onValueChange = onOriginChange,
-                        label = {
-                            Text(
-                                "Origin",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.LocationOn,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
                     )
                     OutlinedTextField(
-                        value = destination,
-                        onValueChange = onDestinationChange,
+                        value = description,
+                        onValueChange = onDescriptionChange,
                         label = {
                             Text(
-                                "Destination",
+                                "Description",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.description),
+                                contentDescription = "Description Icon",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp),
+                        maxLines = 4,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    )
+                    OutlinedTextField(
+                        value = location,
+                        onValueChange = onLocationChange,
+                        label = {
+                            Text(
+                                "Location",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -209,13 +188,14 @@ fun DisplacementContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.LocationOn,
-                                contentDescription = null,
+                                contentDescription = "Location Icon",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                            .height(120.dp),
+                        maxLines = 4,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
@@ -223,15 +203,18 @@ fun DisplacementContent(
                     )
                 }
             }
+
             Button(
                 onClick = onSaveClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = isSaveEnabled,
+                enabled = accidentDate.isNotBlank() && description.isNotBlank() && location.isNotBlank(),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSaveEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                    containerColor = if (accidentDate.isNotBlank() && description.isNotBlank() && location.isNotBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.3f
+                    ),
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 elevation = ButtonDefaults.buttonElevation(
@@ -239,13 +222,17 @@ fun DisplacementContent(
                     pressedElevation = 8.dp
                 )
             ) {
+
                 Text(
                     text = "Save",
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium
                 )
+
             }
+
+
         }
     }
 }
@@ -253,20 +240,18 @@ fun DisplacementContent(
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun DisplacementContentPreview() {
+fun AccidentRegistrationContentPreview() {
     AutoMobileTheme {
-        DisplacementContent(
-            distance = "150.5",
-            onDistanceChange = {},
-            date = "01/01/2023",
-            onDateChange = {},
-            origin = "São Paulo",
-            onOriginChange = {},
-            destination = "Rio de Janeiro",
-            onDestinationChange = {},
+        AccidentContent(
+            accidentDate = "20/05/2025",
+            onAccidentDateChange = {},
+            description = "The driver collided with the rear of the car",
+            onDescriptionChange = {},
+            location = "Avenida Paulista, 1000",
+            onLocationChange = {},
             onSaveClick = {},
-            isSaveEnabled = true,
             onBackClick = {}
         )
     }
 }
+

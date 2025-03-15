@@ -1,97 +1,65 @@
 package com.ufes.automobile.ui.maintenance
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.ufes.automobile.ui.theme.AutoMobileTheme
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.ufes.automobile.R
 import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
-import com.ufes.automobile.ui.theme.AutoMobileTheme
 
 @Composable
-fun MaintenanceScreen(
-    vehicleId: Int?,
+fun MaintenanceReminderScreen(
     navController: NavController,
-    viewModel: MaintenanceViewModel = hiltViewModel()
+    vehicleId: Int?,
+    viewModel: MaintenanceReminderViewModel = hiltViewModel()
 ) {
+    var maintenanceDate by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var cost by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
 
-    MaintenanceContent(
-        vehicleId = vehicleId,
+    MaintenanceReminderContent(
+        maintenanceDate = maintenanceDate,
+        onMaintenanceDateChange = { maintenanceDate = it },
         description = description,
         onDescriptionChange = { description = it },
-        cost = cost,
-        onCostChange = { cost = it },
-        date = date,
-        onDateChange = { date = it },
         onSaveClick = {
             vehicleId?.let {
-                viewModel.saveMaintenance(
+                viewModel.saveMaintenanceReminder(
                     vehicleId = it,
                     description = description,
-                    cost = cost.toFloatOrNull() ?: 0f,
-                    date = parseDate(date)
+                    reminderDate = parseDate(maintenanceDate)
                 )
                 navController.popBackStack()
             }
         },
-        isSaveEnabled = description.isNotBlank() && cost.isNotBlank() && date.isNotBlank(),
         onBackClick = { navController.popBackStack() }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MaintenanceContent(
-    vehicleId: Int?,
+fun MaintenanceReminderContent(
+    maintenanceDate: String,
+    onMaintenanceDateChange: (String) -> Unit,
     description: String,
     onDescriptionChange: (String) -> Unit,
-    cost: String,
-    onCostChange: (String) -> Unit,
-    date: String,
-    onDateChange: (String) -> Unit,
     onSaveClick: () -> Unit,
-    isSaveEnabled: Boolean,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -99,7 +67,7 @@ fun MaintenanceContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Maintenance Registry",
+                        text = "Register Maintenance Reminder",
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -134,8 +102,15 @@ fun MaintenanceContent(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    DatePickerField(
+                        purchaseDate = maintenanceDate,
+                        onPurchaseDateChange = onMaintenanceDateChange,
+                        modifier = Modifier.fillMaxWidth(),
+                        "Next Maintenance Date (dd/mm/yyyy))"
+                    )
                     OutlinedTextField(
                         value = description,
                         onValueChange = onDescriptionChange,
@@ -148,62 +123,34 @@ fun MaintenanceContent(
                         },
                         leadingIcon = {
                             Icon(
-                                imageVector = Icons.Default.Build,
-                                contentDescription = null,
+                                imageVector = ImageVector.vectorResource(id = R.drawable.description),
+                                contentDescription = "Description Icon",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                            .height(120.dp),
+                        maxLines = 4,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
-                    )
-                    OutlinedTextField(
-                        value = cost,
-                        onValueChange = { onCostChange(it.filter { char -> char.isDigit() || char == '.' }) },
-                        label = {
-                            Text(
-                                "Cost ($)",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.attach_money),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
-                    )
-                    DatePickerField(
-                        purchaseDate = date,
-                        onPurchaseDateChange = onDateChange,
-                        modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa)"
                     )
                 }
             }
+
             Button(
                 onClick = onSaveClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = isSaveEnabled,
+                enabled = maintenanceDate.isNotBlank() && description.isNotBlank(),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSaveEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                    containerColor = if (maintenanceDate.isNotBlank() && description.isNotBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.3f
+                    ),
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 elevation = ButtonDefaults.buttonElevation(
@@ -218,6 +165,7 @@ fun MaintenanceContent(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
+
         }
     }
 }
@@ -225,18 +173,14 @@ fun MaintenanceContent(
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun MaintenanceContentPreview() {
+fun MaintenanceReminderContentPreview() {
     AutoMobileTheme {
-        MaintenanceContent(
-            vehicleId = 1,
-            description = "Oil change",
+        MaintenanceReminderContent(
+            maintenanceDate = "20/02/2027",
+            onMaintenanceDateChange = {},
+            description = "Change the air conditioning filter.",
             onDescriptionChange = {},
-            cost = "50.0",
-            onCostChange = {},
-            date = "01/01/2023",
-            onDateChange = {},
             onSaveClick = {},
-            isSaveEnabled = true,
             onBackClick = {}
         )
     }

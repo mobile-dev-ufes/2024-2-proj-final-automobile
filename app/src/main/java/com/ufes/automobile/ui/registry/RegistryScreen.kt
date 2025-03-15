@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
@@ -29,8 +28,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ufes.automobile.R
+import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
@@ -187,7 +186,8 @@ fun RegistryContent(
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        ),
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
                     )
                     OutlinedTextField(
                         value = model,
@@ -210,7 +210,8 @@ fun RegistryContent(
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        ),
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
                     )
                     OutlinedTextField(
                         value = manufacturingYear,
@@ -236,28 +237,12 @@ fun RegistryContent(
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
                     )
-                    OutlinedTextField(
-                        value = purchaseDate,
-                        onValueChange = onPurchaseDateChange,
-                        label = {
-                            Text(
-                                "Purchase Date (dd/mm/aaaa)",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.DateRange,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
+
+                    DatePickerField(
+                        purchaseDate = purchaseDate,
+                        onPurchaseDateChange = onPurchaseDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        "Purchase Date (dd/MM/yyyy)"
                     )
 
                     Card(
