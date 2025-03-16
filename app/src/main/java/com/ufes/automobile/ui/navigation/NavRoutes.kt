@@ -45,4 +45,7 @@ sealed class Route(val route: String) {
     data object MaintenanceReminderScreen : Route("maintenanceReminder/{vehicleId}") {
         fun createRoute(vehicleId: Int) = "maintenanceReminder/$vehicleId"
     }
+    data object ReportsScreen : Route("reports/{vehicleId}") {
+        fun createRoute(vehicleId: Int) = "reports/$vehicleId"
+    }
 }

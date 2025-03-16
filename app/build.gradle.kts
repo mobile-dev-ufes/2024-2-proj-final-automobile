@@ -86,6 +86,10 @@ dependencies {
     androidTestAnnotationProcessor(libs.hilt.compiler)
     // Nav Host
     implementation(libs.androidx.navigation.compose)
+    // Compose Charts
+    implementation(libs.mpandroidchart)
+    implementation(libs.ui)
+    implementation(libs.mpandroidchart)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

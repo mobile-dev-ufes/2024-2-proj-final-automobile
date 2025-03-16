@@ -1,9 +1,6 @@
 package com.ufes.automobile.ui.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
@@ -23,6 +20,7 @@ import com.ufes.automobile.ui.maintenance.MaintenanceReminderScreen
 import com.ufes.automobile.ui.maintenance.MaintenanceScreen
 import com.ufes.automobile.ui.recharge.RechargeScreen
 import com.ufes.automobile.ui.registry.RegistryScreen
+import com.ufes.automobile.ui.reports.ReportsScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, startDestination: String) {
@@ -91,6 +89,10 @@ fun NavGraph(navController: NavHostController, startDestination: String) {
         composable(Route.MaintenanceReminderScreen.route) { backStackEntry ->
             val vehicleId = backStackEntry.arguments?.getString("vehicleId")?.toInt()
             MaintenanceReminderScreen(vehicleId = vehicleId, navController = navController)
+        }
+        composable(Route.ReportsScreen.route) { backStackEntry ->
+            val vehicleId = backStackEntry.arguments?.getString("vehicleId")?.toInt()
+            ReportsScreen(vehicleId = vehicleId, navController = navController)
         }
     }
 }

@@ -85,7 +85,13 @@ fun DashboardScreen(
                 )
             )
         },
-        onReportsClick = { navController.navigate(Route.GarageScreen.route) },
+        onReportsClick = {
+            navController.navigate(
+                Route.ReportsScreen.createRoute(
+                    vehicle?.id ?: 0
+                )
+            )
+        },
         onAccidentClick = {
             navController.navigate(
                 Route.AccidentScreen.createRoute(
