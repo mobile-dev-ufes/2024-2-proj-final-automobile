@@ -27,7 +27,7 @@ private val LightColorScheme = lightColorScheme(
 
     secondary = Danube,
     onSecondary = White,
-    secondaryContainer = Color(0xFFBFD6F5), // Azul mais claro para fundo de componentes
+    secondaryContainer = Color(0xFFE8EEFD), // Azul mais claro para fundo de componentes
     onSecondaryContainer = Black,
 
     background = Color(0xFFF5F9FF), // Azul bem claro, quase branco

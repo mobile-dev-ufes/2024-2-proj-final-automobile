@@ -2,6 +2,7 @@ package com.ufes.automobile.ui.common
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -36,18 +37,23 @@ fun VehicleCard(
                 onClick = onClick,
                 onLongClick = onLongPress,
             )
-            .padding(8.dp),
+            .padding(8.dp)
+            .border(
+                width = 2.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(12.dp)
+            ),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (vehicle.isElectric) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
+            containerColor = if (vehicle.isElectric) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        )
+            defaultElevation = 8.dp
+        ),
     ) {
         Column(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(16.dp)
                 .fillMaxWidth()
         ) {
             Text(
@@ -57,14 +63,9 @@ fun VehicleCard(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Year: ${vehicle.manufacturingYear}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
                 text = if (vehicle.isElectric) "Type: Electric" else "Type: Combustion",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             if (vehicle.isElectric) {
@@ -72,7 +73,7 @@ fun VehicleCard(
                     Text(
                         text = "Range: $it km",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             } else {
@@ -80,7 +81,7 @@ fun VehicleCard(
                     Text(
                         text = "Tank Capacity: $it L",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

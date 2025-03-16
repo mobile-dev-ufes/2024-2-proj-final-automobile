@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -245,141 +246,128 @@ fun RegistryContent(
                         "Purchase Date (dd/MM/yyyy)"
                     )
 
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                     ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "Vehicle Type",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.padding(end = 8.dp)
+                        Text(
+                            text = "Vehicle Type",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Switch(
+                            checked = isElectric,
+                            onCheckedChange = onIsElectricChange,
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                                checkedTrackColor = MaterialTheme.colorScheme.primary.copy(
+                                    alpha = 0.5f
+                                ),
+                                uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.6f
+                                ),
+                                uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.3f
+                                ),
+                                checkedBorderColor = MaterialTheme.colorScheme.primary,
+                                uncheckedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.5f
                                 )
-                                Switch(
-                                    checked = isElectric,
-                                    onCheckedChange = onIsElectricChange,
-                                    modifier = Modifier.padding(horizontal = 8.dp),
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = MaterialTheme.colorScheme.primary,
-                                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(
-                                            alpha = 0.5f
-                                        ),
-                                        uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(
-                                            alpha = 0.6f
-                                        ),
-                                        uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(
-                                            alpha = 0.3f
-                                        ),
-                                        checkedBorderColor = MaterialTheme.colorScheme.primary,
-                                        uncheckedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
-                                            alpha = 0.5f
-                                        )
-                                    )
-                                )
-                                Text(
-                                    text = if (isElectric) "Electric" else "Combustion",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = if (isElectric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.padding(start = 8.dp)
-                                )
-                            }
-                            if (isElectric) {
-                                OutlinedTextField(
-                                    value = batteryCapacity,
-                                    onValueChange = { onBatteryCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
-                                    label = {
-                                        Text(
-                                            "Battery Capacity (kWh)",
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    },
-                                    leadingIcon = {
-                                        Icon(
-                                            ImageVector.vectorResource(id = R.drawable.local_gas_station),
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.primary
-                                        )
-                                    },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
-                                            alpha = 0.5f
-                                        )
-                                    )
-                                )
-                                OutlinedTextField(
-                                    value = range,
-                                    onValueChange = { onRangeChange(it.filter { char -> char.isDigit() || char == '.' }) },
-                                    label = {
-                                        Text(
-                                            "Range (km)",
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    },
-                                    leadingIcon = {
-                                        Icon(
-                                            ImageVector.vectorResource(id = R.drawable.directions_car),
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.primary
-                                        )
-                                    },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
-                                            alpha = 0.5f
-                                        )
-                                    )
-                                )
-                            } else {
-                                OutlinedTextField(
-                                    value = tankCapacity,
-                                    onValueChange = { onTankCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
-                                    label = {
-                                        Text(
-                                            "Tank Capacity (L)",
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    },
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = ImageVector.vectorResource(id = R.drawable.local_gas_station),
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.primary
-                                        )
-                                    },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
-                                            alpha = 0.5f
-                                        )
-                                    )
-                                )
-                            }
-                        }
+                            )
+                        )
+                        Text(
+                            text = if (isElectric) "Electric" else "Combustion",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (isElectric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
                     }
-
+                    if (isElectric) {
+                        OutlinedTextField(
+                            value = batteryCapacity,
+                            onValueChange = { onBatteryCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
+                            label = {
+                                Text(
+                                    "Battery Capacity (kWh)",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    ImageVector.vectorResource(id = R.drawable.local_gas_station),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.5f
+                                )
+                            )
+                        )
+                        OutlinedTextField(
+                            value = range,
+                            onValueChange = { onRangeChange(it.filter { char -> char.isDigit() || char == '.' }) },
+                            label = {
+                                Text(
+                                    "Range (km)",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    ImageVector.vectorResource(id = R.drawable.directions_car),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.5f
+                                )
+                            )
+                        )
+                    } else {
+                        OutlinedTextField(
+                            value = tankCapacity,
+                            onValueChange = { onTankCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
+                            label = {
+                                Text(
+                                    "Tank Capacity (L)",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.local_gas_station),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.5f
+                                )
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                     Button(
                         onClick = onSaveClick,
                         modifier = Modifier

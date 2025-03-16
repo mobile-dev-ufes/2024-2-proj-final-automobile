@@ -137,14 +137,6 @@ fun GarageContent(
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background) // Simplifiquei a camada de fundo
         ) {
-            Text(
-                text = "My Garage",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 24.dp) // Aumentei o padding vertical para mais espaço
-            )
-
             if (vehicles.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -164,64 +156,54 @@ fun GarageContent(
                     contentPadding = PaddingValues(bottom = 80.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 16.dp),
+                        .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(vehicles) { vehicle ->
                         var showMenu by remember { mutableStateOf(false) }
                         var showDialog by remember { mutableStateOf(false) }
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+                        VehicleCard(
+                            vehicle = vehicle,
+                            onClick = { onVehicleClick(vehicle.id.toString()) },
+                            onLongPress = { showMenu = true },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false },
+                            modifier = Modifier.background(MaterialTheme.colorScheme.surface)
                         ) {
-                            Box {
-                                VehicleCard(
-                                    vehicle = vehicle,
-                                    onClick = { onVehicleClick(vehicle.id.toString()) },
-                                    onLongPress = { showMenu = true },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                DropdownMenu(
-                                    expanded = showMenu,
-                                    onDismissRequest = { showMenu = false },
-                                    modifier = Modifier.background(MaterialTheme.colorScheme.surface)
-                                ) {
-                                    DropdownMenuItem(
-                                        text = { Text("Delete Vehicle", color = MaterialTheme.colorScheme.error) },
-                                        onClick = {
-                                            showMenu = false
-                                            showDialog = true
-                                        }
-                                    )
+                            DropdownMenuItem(
+                                text = { Text("Delete Vehicle", color = MaterialTheme.colorScheme.error) },
+                                onClick = {
+                                    showMenu = false
+                                    showDialog = true
                                 }
-                            }
-                            if (showDialog) {
-                                AlertDialog(
-                                    onDismissRequest = { showDialog = false },
-                                    title = { Text("Delete Vehicle") },
-                                    text = { Text("Are you sure you want to delete ${vehicle.brand} ${vehicle.model}?") },
-                                    confirmButton = {
-                                        TextButton(
-                                            onClick = {
-                                                onDeleteClick(vehicle)
-                                                showDialog = false
-                                            }
-                                        ) {
-                                            Text("Delete", color = MaterialTheme.colorScheme.error)
-                                        }
-                                    },
-                                    dismissButton = {
-                                        TextButton(onClick = { showDialog = false }) {
-                                            Text("Cancel")
-                                        }
-                                    }
-                                )
-                            }
+                            )
                         }
+                        if (showDialog) {
+                            AlertDialog(
+                                onDismissRequest = { showDialog = false },
+                                title = { Text("Delete Vehicle") },
+                                text = { Text("Are you sure you want to delete ${vehicle.brand} ${vehicle.model}?") },
+                                confirmButton = {
+                                    TextButton(
+                                        onClick = {
+                                            onDeleteClick(vehicle)
+                                            showDialog = false
+                                        }
+                                    ) {
+                                        Text("Delete", color = MaterialTheme.colorScheme.error)
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = { showDialog = false }) {
+                                        Text("Cancel")
+                                    }
+                                }
+                            )
+                        }
+
                     }
                 }
             }
