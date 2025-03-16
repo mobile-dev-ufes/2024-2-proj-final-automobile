@@ -37,6 +37,5 @@ data class DisplacementEntity(
     val vehicleId: Int,
     val distance: Float,
     val date: Long,
-    val origin: String,
-    val destination: String
+    val description: String
 )

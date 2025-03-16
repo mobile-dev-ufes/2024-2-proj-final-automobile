@@ -26,7 +26,8 @@ class RechargeViewModel @Inject constructor(
         isElectric: Boolean,
         amount: Float,
         cost: Float,
-        date: Long
+        date: Long,
+        description: String
     ) {
         viewModelScope.launch {
             val recharge = RechargeEntity(
@@ -34,7 +35,8 @@ class RechargeViewModel @Inject constructor(
                 isElectric = isElectric,
                 amount = amount,
                 cost = cost,
-                date = date
+                date = date,
+                description = description
             )
             repository.addRecharge(recharge)
         }

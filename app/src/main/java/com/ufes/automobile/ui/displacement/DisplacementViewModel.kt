@@ -27,16 +27,14 @@ class DisplacementViewModel @Inject constructor(
         vehicleId: Int,
         distance: Float,
         date: Long,
-        origin: String,
-        destination: String
+        description: String,
     ) {
         viewModelScope.launch {
             val displacement = DisplacementEntity(
                 vehicleId = vehicleId,
                 distance = distance,
                 date = date,
-                origin = origin,
-                destination = destination
+                description = description
             )
             repository.addDisplacement(displacement)
         }

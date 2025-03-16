@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -53,31 +52,27 @@ fun DisplacementScreen(
 ) {
     var distance by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
-    var origin by remember { mutableStateOf("") }
-    var destination by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
 
     DisplacementContent(
         distance = distance,
         onDistanceChange = { distance = it },
         date = date,
         onDateChange = { date = it },
-        origin = origin,
-        onOriginChange = { origin = it },
-        destination = destination,
-        onDestinationChange = { destination = it },
+        description = description,
+        onDescriptionChange = { description = it },
         onSaveClick = {
             vehicleId?.let {
                 viewModel.saveDisplacement(
                     vehicleId = it,
                     distance = distance.toFloatOrNull() ?: 0f,
                     date = parseDate(date),
-                    origin = origin,
-                    destination = destination
+                    description = description,
                 )
                 navController.popBackStack()
             }
         },
-        isSaveEnabled = distance.isNotBlank() && date.isNotBlank() && origin.isNotBlank() && destination.isNotBlank(),
+        isSaveEnabled = distance.isNotBlank() && date.isNotBlank(),
         onBackClick = { navController.popBackStack() }
     )
 }
@@ -89,10 +84,8 @@ fun DisplacementContent(
     onDistanceChange: (String) -> Unit,
     date: String,
     onDateChange: (String) -> Unit,
-    origin: String,
-    onOriginChange: (String) -> Unit,
-    destination: String,
-    onDestinationChange: (String) -> Unit,
+    description: String,
+    onDescriptionChange: (String) -> Unit,
     onSaveClick: () -> Unit,
     isSaveEnabled: Boolean,
     onBackClick: () -> Unit
@@ -165,61 +158,36 @@ fun DisplacementContent(
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
                     )
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = onDescriptionChange,
+                        label = {
+                            Text(
+                                "Description",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.description),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    )
                     DatePickerField(
                         purchaseDate = date,
                         onPurchaseDateChange = onDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa"
-                    )
-                    OutlinedTextField(
-                        value = origin,
-                        onValueChange = onOriginChange,
-                        label = {
-                            Text(
-                                "Origin",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.LocationOn,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
-                    )
-                    OutlinedTextField(
-                        value = destination,
-                        onValueChange = onDestinationChange,
-                        label = {
-                            Text(
-                                "Destination",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.LocationOn,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        "Date (dd/mm/aaaa)"
                     )
                 }
             }
@@ -260,10 +228,8 @@ fun DisplacementContentPreview() {
             onDistanceChange = {},
             date = "01/01/2023",
             onDateChange = {},
-            origin = "São Paulo",
-            onOriginChange = {},
-            destination = "Rio de Janeiro",
-            onDestinationChange = {},
+            description = "Left home and went to the supermarket",
+            onDescriptionChange = {},
             onSaveClick = {},
             isSaveEnabled = true,
             onBackClick = {}

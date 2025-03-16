@@ -6,7 +6,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -33,10 +32,10 @@ fun RechargeScreen(
     var amount by remember { mutableStateOf("") }
     var cost by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
     var isElectric by remember { mutableStateOf(false) }
 
     RechargeContent(
-        vehicleId = vehicleId,
         amount = amount,
         onAmountChange = { amount = it },
         cost = cost,
@@ -45,6 +44,8 @@ fun RechargeScreen(
         onDateChange = { date = it },
         isElectric = isElectric,
         onIsElectricChange = { isElectric = it },
+        description = description,
+        onDescriptionChange = { description = it },
         onSaveClick = {
             vehicleId?.let {
                 viewModel.saveRecharge(
@@ -52,12 +53,13 @@ fun RechargeScreen(
                     isElectric = isElectric,
                     amount = amount.toFloatOrNull() ?: 0f,
                     cost = cost.toFloatOrNull() ?: 0f,
-                    date = parseDate(date)
+                    date = parseDate(date),
+                    description = description
                 )
                 navController.popBackStack()
             }
         },
-        isSaveEnabled = amount.isNotBlank() && cost.isNotBlank() && date.isNotBlank(),
+        isSaveEnabled = amount.isNotBlank() && cost.isNotBlank() && description.isNotBlank() && date.isNotBlank(),
         onBackClick = { navController.popBackStack() }
     )
 }
@@ -65,7 +67,6 @@ fun RechargeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RechargeContent(
-    vehicleId: Int?,
     amount: String,
     onAmountChange: (String) -> Unit,
     cost: String,
@@ -74,6 +75,8 @@ fun RechargeContent(
     onDateChange: (String) -> Unit,
     isElectric: Boolean,
     onIsElectricChange: (Boolean) -> Unit,
+    description: String,
+    onDescriptionChange: (String) -> Unit,
     onSaveClick: () -> Unit,
     isSaveEnabled: Boolean,
     onBackClick: () -> Unit
@@ -174,6 +177,29 @@ fun RechargeContent(
                         )
                     )
                     OutlinedTextField(
+                        value = description,
+                        onValueChange = onDescriptionChange,
+                        label = {
+                            Text(
+                                "Description",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.description),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    )
+                    OutlinedTextField(
                         value = cost,
                         onValueChange = onCostChange,
                         label = {
@@ -238,7 +264,6 @@ fun RechargeContent(
 fun RechargeContentPreview() {
     AutoMobileTheme {
         RechargeContent(
-            vehicleId = 1,
             amount = "50.0",
             onAmountChange = {},
             cost = "75.50",
@@ -247,6 +272,8 @@ fun RechargeContentPreview() {
             onDateChange = {},
             isElectric = false,
             onIsElectricChange = {},
+            description = "At the gas station near the mall",
+            onDescriptionChange = {},
             onSaveClick = {},
             isSaveEnabled = true,
             onBackClick = {}

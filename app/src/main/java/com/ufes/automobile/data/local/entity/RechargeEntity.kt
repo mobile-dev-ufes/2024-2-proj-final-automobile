@@ -37,5 +37,6 @@ data class RechargeEntity(
     val isElectric: Boolean,
     val amount: Float,
     val cost: Float,
-    val date: Long
+    val date: Long,
+    val description: String
 )
