@@ -36,4 +36,15 @@ class GarageViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteVehicle(vehicle: Vehicle) {
+        viewModelScope.launch {
+            try {
+                garageRepository.deleteVehicle(vehicle.id)
+                _vehicles.value = _vehicles.value.filter { it.id != vehicle.id }
+            } catch (e: Exception) {
+                println("Error deleting vehicle: ${e.message}")
+            }
+        }
+    }
 }

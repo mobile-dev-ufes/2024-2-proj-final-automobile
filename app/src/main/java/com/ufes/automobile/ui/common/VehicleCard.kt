@@ -1,7 +1,10 @@
 package com.ufes.automobile.ui.common
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,20 +17,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ufes.automobile.domain.model.Vehicle
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VehicleCard(
     vehicle: Vehicle,
     onClick: () -> Unit,
+    onLongPress: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
+        modifier = modifier
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongPress,
+            )
             .padding(8.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -39,7 +47,7 @@ fun VehicleCard(
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(12.dp)
                 .fillMaxWidth()
         ) {
             Text(
@@ -97,6 +105,7 @@ fun PreviewVehicleCard() {
             range = null,
             tankCapacity = 50f
         ),
-        onClick = {}
+        onClick = {},
+        onLongPress = {}
     )
 }
