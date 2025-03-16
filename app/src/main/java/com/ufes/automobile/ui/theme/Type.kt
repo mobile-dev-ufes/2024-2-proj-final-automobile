@@ -15,7 +15,6 @@ val RobotoMonoFamily = FontFamily(
     Font(R.font.inter_regular, FontWeight.Normal),
     Font(R.font.inter_bold, FontWeight.Bold),
     Font(R.font.inter_medium, FontWeight.Medium)
-
 )
 
 // Set of Material typography styles to start with
