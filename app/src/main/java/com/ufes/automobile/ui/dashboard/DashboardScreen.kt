@@ -333,7 +333,7 @@ fun DashboardContent(
                             }
                         }
                         Button(
-                            onClick = onReportsClick,
+                            onClick = onInsuranceClick,
                             modifier = Modifier
                                 .weight(1f)
                                 .height(56.dp),
@@ -352,12 +352,12 @@ fun DashboardContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Favorite,
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.shield),
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = "Reports",
+                                    text = "Insurance",
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
@@ -439,14 +439,14 @@ fun DashboardContent(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Button(
-                            onClick = onInsuranceClick,
+                            onClick = onReportsClick,
                             modifier = Modifier
-                                .weight(1f)
+                                .fillMaxWidth()
                                 .height(56.dp),
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.onSecondary
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                             ),
                             elevation = ButtonDefaults.buttonElevation(
                                 defaultElevation = 6.dp,
@@ -458,19 +458,18 @@ fun DashboardContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.shield),
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.query_stats),
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = "Insurance",
+                                    text = "Reports",
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
                                 )
                             }
                         }
-                        Spacer(modifier = Modifier.weight(1f))
                     }
                 }
             }
