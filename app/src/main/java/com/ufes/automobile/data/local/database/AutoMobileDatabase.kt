@@ -66,7 +66,7 @@ import com.ufes.automobile.data.local.entity.MaintenanceReminderEntity
         InsuranceEntity::class,
         MaintenanceReminderEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class AutoMobileDatabase : RoomDatabase() {
