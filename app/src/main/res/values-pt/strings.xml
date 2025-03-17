@@ -96,4 +96,10 @@
     <string name="jun">Jun</string>
     <string name="jul">Jul</string>
     <string name="may">Mai</string>
+    <string name="aug">Ago</string>
+    <string name="sep">Set</string>
+    <string name="oct">Out</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dez</string>
+
 </resources>

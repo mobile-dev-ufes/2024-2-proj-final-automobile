@@ -109,7 +109,8 @@ fun ReportsScreen(
         totalAllCost = totalAllCost,
         costPerKm = costPerKm,
         accidents = accidents,
-        maintenances = maintenances
+        maintenances = maintenances,
+        distanceKmLabel = stringResource(id = R.string.distance)
     )
 }
 
@@ -126,8 +127,9 @@ fun ReportsContent(
     totalAllCost: Float = 0f,
     costPerKm: Float = 0f,
     accidents: List<AccidentEntity> = emptyList(),
-    maintenances: List<MaintenanceEntity> = emptyList()
-){
+    maintenances: List<MaintenanceEntity> = emptyList(),
+    distanceKmLabel: String
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -190,17 +192,14 @@ fun ReportsContent(
                                 .height(300.dp),
                             factory = { context ->
                                 BarChart(context).apply {
-                                    description.isEnabled = false // Remover a descrição
+                                    description.isEnabled = false
                                     legend.isEnabled = false
-                                    val barDataSet = BarDataSet(
-                                        distanceData,
-                                        "Distância (km)"
-                                    ) // Rótulo do conjunto de dados
+                                    val barDataSet = BarDataSet(distanceData, distanceKmLabel)
 
                                     barDataSet.color = ContextCompat.getColor(
                                         context,
                                         android.R.color.holo_blue_dark
-                                    ) // Cor do conjunto de dados
+                                    )
 
                                     xAxis.textSize = 14f
                                     xAxis.setDrawGridLines(false)
@@ -209,13 +208,12 @@ fun ReportsContent(
                                     val barData = BarData(barDataSet)
                                     data = barData
 
-                                    animateY(1000) // Animação de entrada
-
-                                    invalidate() // Atualizar o gráfico
+                                    animateY(1000)
+                                    invalidate()
                                 }
                             },
                             update = { chart ->
-                                val barDataSet = BarDataSet(distanceData, "Distância (km)")
+                                val barDataSet = BarDataSet(distanceData, distanceKmLabel)
 
                                 val xAxisVals = mutableListOf<String>()
                                 months.forEachIndexed { index, value ->
@@ -268,7 +266,7 @@ fun ReportsContent(
                                     holeRadius = 40f
                                     transparentCircleRadius = 45f
 
-                                    legend.isEnabled = true // Garante que a legenda esteja visível
+                                    legend.isEnabled = true
                                     legend.textSize = 14f
 
                                     val pieDataSet = PieDataSet(costData, "")
@@ -284,8 +282,7 @@ fun ReportsContent(
                             update = { chart ->
                                 chart.setDrawEntryLabels(false)
                                 chart.description.isEnabled = false
-                                chart.legend.isEnabled =
-                                    true // Garante que a legenda esteja visível
+                                chart.legend.isEnabled = true
                                 chart.legend.textSize = 14f
                                 val pieDataSet = PieDataSet(costData, "")
                                 pieDataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
@@ -501,19 +498,19 @@ fun ReportsContent(
 @Composable
 fun ReportsScreenPreview() {
     val distanceData = listOf(
-        BarEntry(0f, 100f), // Janeiro: 100 km
-        BarEntry(1f, 150f), // Fevereiro: 150 km
-        BarEntry(2f, 200f), // Março: 200 km
-        BarEntry(3f, 180f), // Abril: 180 km
-        BarEntry(4f, 220f), // Maio: 220 km
-        BarEntry(5f, 250f), // Junho: 250 km
+        BarEntry(0f, 100f),
+        BarEntry(1f, 150f),
+        BarEntry(2f, 200f),
+        BarEntry(3f, 180f),
+        BarEntry(4f, 220f),
+        BarEntry(5f, 250f)
     )
     val costData = listOf(
-        PieEntry(300f, stringResource(id = R.string.fuel_charging)), // 300 unidades em combustível/carga
-        PieEntry(150f, stringResource(id = R.string.maintenance)),   // 150 unidades em manutenção
-        PieEntry(50f, stringResource(id = R.string.insurance)),      // 50 unidades em seguro
+        PieEntry(300f, "Fuel/Charging"),
+        PieEntry(150f, "Maintenance"),
+        PieEntry(50f, "Insurance")
     )
-    val months = setOf(stringResource(R.string.jan), stringResource(R.string.feb), stringResource(R.string.mar), stringResource(R.string.apr), stringResource(R.string.may), stringResource(R.string.jun))
+    val months = setOf("Jan", "Feb", "Mar", "Apr", "May", "Jun")
 
     AutoMobileTheme {
         ReportsContent(
@@ -527,7 +524,8 @@ fun ReportsScreenPreview() {
             totalAllCost = 600f,
             costPerKm = 100f,
             accidents = emptyList(),
-            maintenances = emptyList()
+            maintenances = emptyList(),
+            distanceKmLabel = "Distance (km)"
         )
     }
 }

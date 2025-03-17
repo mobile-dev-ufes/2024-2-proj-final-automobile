@@ -1,10 +1,13 @@
 package com.ufes.automobile.ui.reports
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieEntry
+import com.ufes.automobile.R
 import com.ufes.automobile.data.local.entity.AccidentEntity
 import com.ufes.automobile.data.local.entity.MaintenanceEntity
 import com.ufes.automobile.domain.repository.AccidentRepository
@@ -59,10 +62,11 @@ class ReportsViewModel @Inject constructor(
     private val rechargeRepository: RechargeRepository,
     private val maintenanceRepository: MaintenanceRepository,
     private val insuranceRepository: InsuranceRepository,
-    private val accidentRepository: AccidentRepository
-) : ViewModel() {
-    private val _distanceData = MutableStateFlow<List<BarEntry>>(emptyList()) // Corrigido para Entry do MPAndroidChart
-    val distanceData: StateFlow<List<BarEntry>> = _distanceData.asStateFlow() // Corrigido para Entry do MPAndroidChart
+    private val accidentRepository: AccidentRepository,
+    application: Application
+) : AndroidViewModel(application) {
+    private val _distanceData = MutableStateFlow<List<BarEntry>>(emptyList())
+    val distanceData: StateFlow<List<BarEntry>> = _distanceData.asStateFlow()
 
     private val _costData = MutableStateFlow<List<PieEntry>>(emptyList())
     val costData: StateFlow<List<PieEntry>> = _costData.asStateFlow()
@@ -93,8 +97,6 @@ class ReportsViewModel @Inject constructor(
 
     fun loadStatistics(vehicleId: Int) {
         viewModelScope.launch {
-            // Simulação de dados (substitua pela lógica real do seu repositório)
-            // Exemplo: Distância percorrida por mês
             var displacements = displacementRepository.getDisplacementsByVehicle(vehicleId)
 
             var totalDistance = 0f
@@ -106,7 +108,7 @@ class ReportsViewModel @Inject constructor(
 
             // Calculate the timestamp 6 months ago
             val sixMonthsAgo = Calendar.getInstance()
-            sixMonthsAgo.add(Calendar.MONTH, -5) // Subtract 6 months
+            sixMonthsAgo.add(Calendar.MONTH, -5)
 
             // Filter the displacements
             displacements = displacements.filter { displacement ->
@@ -121,7 +123,7 @@ class ReportsViewModel @Inject constructor(
                 distancePerMonth.add(i, 0f)
             }
 
-            displacements.forEach{displacement ->
+            displacements.forEach { displacement ->
                 val month = Calendar.getInstance().apply { time = Date(displacement.date) }.get(Calendar.MONTH)
                 distancePerMonth[month] += displacement.distance
             }
@@ -129,46 +131,40 @@ class ReportsViewModel @Inject constructor(
             val now = Calendar.getInstance()
             val months = mutableSetOf<String>()
             var j = sixMonthsAgo.get(Calendar.MONTH)
-            val u: Int
-            u = if (now.get(Calendar.MONTH) + 1 < 0)
-                11
-            else
-                now.get(Calendar.MONTH) + 1
+            val u: Int = if (now.get(Calendar.MONTH) + 1 < 0) 11 else now.get(Calendar.MONTH) + 1
 
+            // Use resources to get month names
             while (j != u) {
-                when (j) {
-                    0 -> months.add("Jan")
-                    1 -> months.add("Fev")
-                    2 -> months.add("Mar")
-                    3 -> months.add("Abr")
-                    4 -> months.add("Mai")
-                    5 -> months.add("Jun")
-                    6 -> months.add("Jul")
-                    7 -> months.add("Ago")
-                    8 -> months.add("Set")
-                    9 -> months.add("Out")
-                    10 -> months.add("Nov")
-                    11 -> months.add("Dez")
+                val monthName = when (j) {
+                    0 -> getApplication<Application>().resources.getString(R.string.jan)
+                    1 -> getApplication<Application>().resources.getString(R.string.feb)
+                    2 -> getApplication<Application>().resources.getString(R.string.mar)
+                    3 -> getApplication<Application>().resources.getString(R.string.apr)
+                    4 -> getApplication<Application>().resources.getString(R.string.may)
+                    5 -> getApplication<Application>().resources.getString(R.string.jun)
+                    6 -> getApplication<Application>().resources.getString(R.string.jul)
+                    7 -> getApplication<Application>().resources.getString(R.string.aug)
+                    8 -> getApplication<Application>().resources.getString(R.string.sep)
+                    9 -> getApplication<Application>().resources.getString(R.string.oct)
+                    10 -> getApplication<Application>().resources.getString(R.string.nov)
+                    11 -> getApplication<Application>().resources.getString(R.string.dec)
+                    else -> ""
                 }
+                months.add(monthName)
                 j++
-                if (j > 11)
-                    j = 0
+                if (j > 11) j = 0
             }
             _months.value = months
 
             val distancePerMonthFiltered = mutableListOf<BarEntry>()
             var i = sixMonthsAgo.get(Calendar.MONTH)
             var k = 0.0f
-            val g: Int = if (now.get(Calendar.MONTH) + 1 > 11)
-                0
-            else
-                now.get(Calendar.MONTH) + 1
+            val g: Int = if (now.get(Calendar.MONTH) + 1 > 11) 0 else now.get(Calendar.MONTH) + 1
 
             while (i != g) {
                 distancePerMonthFiltered.add(BarEntry(k, distancePerMonth[i]))
                 i++
-                if (i > 11)
-                    i = 0
+                if (i > 11) i = 0
                 k++
             }
 
@@ -206,24 +202,22 @@ class ReportsViewModel @Inject constructor(
             else
                 _costPerKm.value = 0f
 
+            // Use resources to get strings for cost data
             _costData.value = listOf(
-                PieEntry(totalRecharges, "Fuel/Charging"),
-                PieEntry(totalMaintenances, "Maintenance"),
-                PieEntry(totalInsurances, "Insurance")
+                PieEntry(totalRecharges, getApplication<Application>().resources.getString(R.string.fuel_charging)),
+                PieEntry(totalMaintenances, getApplication<Application>().resources.getString(R.string.maintenance)),
+                PieEntry(totalInsurances, getApplication<Application>().resources.getString(R.string.insurance))
             )
 
             // Acidentes: últimas 3 ocorrências (ordem cronológica decrescente)
             var accidents = accidentRepository.getAccidentsByVehicle(vehicleId)
-            accidents = accidents.sortedByDescending { it.date } // Mais recente -> mais antigo
-            _accidents.value = accidents.take(3) // Pega os 3 mais recentes
+            accidents = accidents.sortedByDescending { it.date }
+            _accidents.value = accidents.take(3)
 
             // Manutenções: últimas 3 ocorrências (ordem cronológica decrescente)
             maintenances = maintenanceRepository.getMaintenanceByVehicle(vehicleId)
-            maintenances = maintenances.sortedByDescending { it.date } // Mais recente -> mais antigo
-            _maintenances.value = maintenances.take(3) // Pega os 3 mais recentes
-
-            // Deslocamentos (mantido como estava)
-            displacements = displacements.sortedBy { it.date }
+            maintenances = maintenances.sortedByDescending { it.date }
+            _maintenances.value = maintenances.take(3)
 
             Log.d("ReportsViewModel", "Accidents: ${_accidents.value}")
             Log.d("ReportsViewModel", "Maintenances: ${_maintenances.value}")
