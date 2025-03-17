@@ -22,6 +22,16 @@ import com.ufes.automobile.ui.recharge.RechargeScreen
 import com.ufes.automobile.ui.registry.RegistryScreen
 import com.ufes.automobile.ui.reports.ReportsScreen
 
+/**
+ * Defines the navigation graph for the application.
+ *
+ * This composable function sets up the navigation structure using Jetpack Compose Navigation.
+ * It defines the different screens (destinations) within the app and how they are connected.
+ * It also applies custom transitions (slide-in/out) for a smoother user experience.
+ *
+ * @param navController The NavHostController that manages the navigation within the graph.
+ * @param startDestination The initial destination (screen) to display when the navigation graph is first shown.
+ */
 @Composable
 fun NavGraph(navController: NavHostController, startDestination: String) {
     NavHost(

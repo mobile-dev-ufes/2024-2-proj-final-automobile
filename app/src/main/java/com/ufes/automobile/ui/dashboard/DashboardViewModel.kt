@@ -12,10 +12,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel for the Dashboard screen.
+- * ViewModel for the Dashboard screen.
++ * [DashboardViewModel] manages the data and business logic for the Dashboard screen.
  *
- * This ViewModel is responsible for fetching and exposing data related to a specific vehicle
- * to the UI. It interacts with the [GarageRepository] to retrieve the vehicle information.
+- * This ViewModel is responsible for fetching and exposing data related to a specific vehicle
+- * to the UI. It interacts with the [GarageRepository] to retrieve the vehicle information.
++ * This ViewModel is responsible for:
++ *  - Fetching and exposing data related to a specific vehicle to the UI.
++ *  - Interacting with the [GarageRepository] to retrieve the vehicle's information.
++ *  - Handling the loading and state updates of the vehicle data.
++ *
++ * The ViewModel exposes a [StateFlow] called `vehicle` which emits the currently loaded [Vehicle] object,
++ * or `null` if no vehicle is loaded.
++ *
++ * Use the [loadVehicle] function to retrieve and load vehicle data by its ID.
++ *
++ * @property garageRepository The [GarageRepository] instance used to interact with the vehicle data source.
  */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(

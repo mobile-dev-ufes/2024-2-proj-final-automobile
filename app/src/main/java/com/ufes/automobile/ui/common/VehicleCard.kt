@@ -22,6 +22,27 @@ import androidx.compose.ui.unit.dp
 import com.ufes.automobile.R
 import com.ufes.automobile.domain.model.Vehicle
 
+/**
+ * Displays a card representing a vehicle with details like brand, model, year, and type.
+ *
+ * This composable presents a stylized card that shows essential information about a vehicle.
+ * It differentiates between electric and combustion vehicles, displaying range or tank capacity accordingly.
+ * The card is interactive, supporting both short clicks and long presses.
+ *
+ * @param vehicle The [Vehicle] object containing the data to display.
+ *  - `brand`: The brand of the vehicle (e.g., "Tesla", "Toyota").
+ *  - `model`: The model of the vehicle (e.g., "Model S", "Camry").
+ *  - `manufacturingYear`: The year the vehicle was manufactured.
+ *  - `isElectric`: A boolean indicating whether the vehicle is electric.
+ *  - `range`: The range of the vehicle in kilometers (for electric vehicles). Can be null.
+ *  - `tankCapacity`: The tank capacity of the vehicle in liters (for combustion vehicles). Can be null.
+ * @param onClick The callback to execute when the card is clicked.
+ *  - This lambda function takes no parameters and returns nothing.
+ *  - Example usage: `{ viewModel.onVehicleClicked(vehicle) }`
+ * @param onLongPress The callback to execute when the card is long-pressed.
+ *  - This lambda function takes no parameters and returns nothing.
+ *  - Example usage: `{ viewModel.onVehicleLongPressed(vehicle) }`
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VehicleCard(

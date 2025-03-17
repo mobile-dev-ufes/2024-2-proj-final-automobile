@@ -45,6 +45,22 @@ import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
+/**
+ * [DisplacementScreen] is a composable function responsible for displaying and handling the
+ * screen where the user can input and save a new displacement record for a specific vehicle.
+ *
+ * It utilizes a [DisplacementViewModel] to manage the data and interact with the underlying
+ * data layer for saving the displacement.
+ *
+ * @param vehicleId The ID of the vehicle for which the displacement is being recorded.
+ *                  If null, the save operation will not be performed.
+ * @param navController The NavController used for navigating within the application.
+ *                      It's used to pop the back stack after a successful save or when
+ *                      the user presses the back button.
+ * @param viewModel The [DisplacementViewModel] instance, obtained using Hilt's hiltViewModel,
+ *                  responsible for handling displacement-related logic and data operations.
+ *                  Defaults to a new instance if not provided.
+ */
 @Composable
 fun DisplacementScreen(
     vehicleId: Int?,

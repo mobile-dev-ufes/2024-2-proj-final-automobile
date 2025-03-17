@@ -52,6 +52,20 @@ import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
+/**
+ * RegistryScreen is a composable function that displays the vehicle registry screen.
+ *
+ * This screen allows users to input details about their vehicle, including brand, model,
+ * manufacturing year, purchase date, whether it's electric, battery capacity (if electric),
+ * range (if electric), and tank capacity (if not electric).
+ *
+ * It uses a [RegistryViewModel] to handle saving the vehicle data and interacts with a
+ * [NavHostController] to manage navigation.
+ *
+ * @param navController The [NavHostController] used for navigating between screens.
+ * @param viewModel The [RegistryViewModel] used for saving vehicle data. Defaults to a
+ *                  [hiltViewModel] instance.
+ */
 @Composable
 fun RegistryScreen(
     navController: NavHostController,

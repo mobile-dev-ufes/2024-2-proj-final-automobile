@@ -52,6 +52,44 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Composable function that represents the Dashboard screen.
+ *
+ * This screen displays information about a specific vehicle and provides navigation to other related screens,
+ * such as Recharge, Displacement, Maintenance, Reports, Accident, Insurance and Maintenance Reminder.
+ *
+ * @param vehicleId The ID of the vehicle to display. If null, no vehicle will be loaded.
+ * @param navController The NavController used for navigating between screens.
+ * @param viewModel The DashboardViewModel used to manage the state and data of the dashboard. Defaults to a hiltViewModel.
+ *
+ * Usage:
+ * ```
+ *  DashboardScreen(
+ *      vehicleId = 1,
+ *      navController = navController
+ *  )
+ * ```
+ *
+ * Functionality:
+ * - Loads the vehicle data based on the provided `vehicleId` using the `DashboardViewModel`.
+ * - Displays the vehicle information using the `DashboardContent` composable.
+ * - Handles navigation to the following screens when their respective buttons are clicked:
+ *   - Recharge: Navigates to the Recharge screen, passing the vehicle ID.
+ *   - Displacement: Navigates to the Displacement screen, passing the vehicle ID.
+ *   - Maintenance: Navigates to the Maintenance screen, passing the vehicle ID.
+ *   - Reports: Navigates to the Reports screen, passing the vehicle ID.
+ *   - Accident: Navigates to the Accident screen, passing the vehicle ID.
+ *   - Insurance: Navigates to the Insurance screen, passing the vehicle ID.
+ *   - Maintenance Reminder: Navigates to the Maintenance Reminder screen, passing the vehicle ID.
+ *   - Back: Pops the back stack to return to the previous screen.
+ *
+ * State Management:
+ * - Uses `LaunchedEffect` to load the vehicle data when `vehicleId` changes.
+ * - Uses `collectAsState` to observe the `vehicle` state from the `DashboardViewModel`.
+ *
+ * Note:
+ * The `Route` class (e.g., `Route.RechargeScreen`) is assumed to define the navigation routes and how to create them with parameters.
+ */
 @Composable
 fun DashboardScreen(
     vehicleId: Int?,

@@ -40,6 +40,36 @@ import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.R
 import com.ufes.automobile.ui.common.DatePickerField
 
+/**
+ * [AccidentScreen] is a composable function responsible for displaying the screen
+ * where users can input and save details about an accident.
+ *
+ * @param navController The NavController used for navigating between screens.
+ * @param vehicleId The ID of the vehicle associated with the accident. Can be null if not applicable.
+ * @param viewModel The [AccidentViewModel] responsible for handling the business logic related to accidents.
+ *                  Uses Hilt for dependency injection.
+ *
+ * This screen allows users to:
+ *   - Input the date of the accident.
+ *   - Input a description of the accident.
+ *   - Input the location of the accident.
+ *   - Save the accident details.
+ *   - Navigate back to the previous screen.
+ *
+ * When the user clicks the "Save" button:
+ *   - The `vehicleId`, `description`, `location`, and `date` are passed to the [AccidentViewModel]'s `saveAccident` method.
+ *   - The date string is parsed into a Date object using the `parseDate` function (assumed to be defined elsewhere).
+ *   - After saving, the screen navigates back to the previous screen using `navController.popBackStack()`.
+ *
+ * When the user clicks the "Back" button:
+ *   - The screen navigates back to the previous screen using `navController.popBackStack()`.
+ *
+ * The screen uses state variables (`accidentDate`, `description`, `location`) to track the user's input.
+ * These are updated using the provided callbacks (`onAccidentDateChange`, `onDescriptionChange`, `onLocationChange`)
+ * passed to the underlying `AccidentContent` composable.
+ *
+ * The screen UI is rendered by the `AccidentContent` composable (assumed to be defined elsewhere).
+ */
 @Composable
 fun AccidentScreen(
     navController: NavController,

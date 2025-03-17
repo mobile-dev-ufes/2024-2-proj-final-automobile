@@ -5,6 +5,12 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.ufes.automobile.data.local.entity.MaintenanceReminderEntity
 
+/**
+ * Data Access Object (DAO) for interacting with the [MaintenanceReminderEntity] table.
+ *
+ * This interface provides methods for performing database operations related to maintenance reminders,
+ * such as inserting new reminders and retrieving reminders associated with a specific vehicle.
+ */
 @Dao
 interface MaintenanceReminderDao {
     @Insert

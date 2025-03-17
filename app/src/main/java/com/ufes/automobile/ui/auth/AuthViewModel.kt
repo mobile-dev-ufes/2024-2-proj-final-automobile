@@ -9,6 +9,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Represents the state of an authentication process.
+ *
+ * This data class encapsulates the various states that can occur during
+ * an authentication operation, such as loading, success, or failure.
+ *
+ * @property isLoading Indicates whether the authentication process is currently in progress.
+ *                     Defaults to `false`.
+ * @property isSuccess Indicates whether the authentication process has completed successfully.
+ *                     Defaults to `false`.
+ * @property errorMessage Contains an error message if the authentication process failed.
+ *                        `null` if no error occurred. Defaults to `null`.
+ */
 data class AuthState(
     val isLoading: Boolean = false,
     val isSuccess: Boolean = false,

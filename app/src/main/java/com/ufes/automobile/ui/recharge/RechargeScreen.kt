@@ -24,6 +24,37 @@ import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
+/**
+ * Composable function that displays the recharge screen, allowing users to input details
+ * about a vehicle recharge event and save it.
+ *
+ * @param vehicleId The ID of the vehicle being recharged. If null, it implies an error state or invalid vehicle.
+ * @param navController The NavController used for navigating between screens.
+ * @param viewModel The RechargeViewModel responsible for managing recharge data and operations.
+ *                  Defaults to a viewModel provided by Hilt.
+ *
+ * The screen allows the user to input:
+ *  - Amount: The quantity of fuel/electricity added.
+ *  - Cost: The total cost of the recharge.
+ *  - Date: The date of the recharge event.
+ *  - Description: Any additional notes about the recharge.
+ *  - isElectric: A boolean indicating if the vehicle is electric or not
+ *
+ * The user can:
+ * - Save the recharge information.
+ * - Navigate back to the previous screen.
+ *
+ * The save operation is enabled only when:
+ * - Amount is not empty.
+ * - Cost is not empty.
+ * - Description is not empty.
+ * - Date is not empty
+ *
+ * Upon successful save, the screen navigates back using the NavController.
+ *
+ * The function uses state hoisting to manage the input fields.
+ * It leverages the RechargeContent composable to display the UI elements.
+ */
 @Composable
 fun RechargeScreen(
     vehicleId: Int?,

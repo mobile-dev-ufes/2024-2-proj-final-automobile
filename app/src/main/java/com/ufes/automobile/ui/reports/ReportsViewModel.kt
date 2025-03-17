@@ -23,6 +23,38 @@ import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
+/**
+ * ViewModel class responsible for managing and providing data related to vehicle reports.
+ *
+ * This class fetches data from various repositories concerning vehicle operations, including
+ * displacements, recharges (fueling/charging), maintenances, insurances, and accidents.
+ * It processes this data to calculate and expose key statistics and data visualizations
+ * suitable for generating reports. The data is formatted to be used directly in charts and
+ * UI elements, providing insights into vehicle usage and associated costs over time.
+ *
+ * **Data Sources:**
+ * - `displacementRepository`: Provides access to data about vehicle displacements (distance traveled).
+ * - `rechargeRepository`: Provides access to data about vehicle recharges (fueling or charging).
+ * - `maintenanceRepository`: Provides access to data about vehicle maintenance records.
+ * - `insuranceRepository`: Provides access to data about vehicle insurance records.
+ * - `accidentRepository`: Provides access to data about vehicle accident records.
+ *
+ * **Exposed Data:**
+ * - `distanceData`: A `StateFlow` emitting a list of `BarEntry` objects, representing the
+ *   distance traveled by the vehicle per month. Suitable for use in a bar chart.
+ * - `costData`: A `StateFlow` emitting a list of `PieEntry` objects, representing the
+ *   distribution of costs across different categories (recharges, maintenances, insurances).
+ *   Suitable for use in a pie chart.
+ * - `months`: A `StateFlow` emitting a set of month names (e.g., "Jan", "Feb") for which
+ *   data is available within the reporting period (last 6 months).
+ * - `totalRechargesCost`: A `StateFlow` emitting the total cost of all recharges for the vehicle.
+ * - `totalMaintenancesCost`: A `StateFlow` emitting the total cost of all maintenances for the vehicle.
+ * - `totalInsurancesCost`: A `StateFlow` emitting the total cost of all insurances for the vehicle.
+ * - `totalAllCost`: A `StateFlow` emitting the total cost of all expenses for the vehicle.
+ * - `costPerKm`: A `StateFlow` emitting the cost per kilometer of the vehicle's journey.
+ * - `accidents`: A `StateFlow` emitting a list of the most recent accidents associated with the vehicle.
+ * - `maintenances`: A `StateFlow` emitting a list of the most recent maintenances associated with the vehicle.
+ */
 @HiltViewModel
 class ReportsViewModel @Inject constructor(
     private val displacementRepository: DisplacementRepository,

@@ -55,6 +55,20 @@ import com.ufes.automobile.ui.navigation.Route
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
 
+/**
+ * [GarageScreen] is a composable function that displays the user's garage,
+ * listing their registered vehicles. It provides functionality to navigate to
+ * other screens like the vehicle registration screen, vehicle dashboard,
+ * and login screen upon logout.
+ *
+ * @param navController The NavController instance used for navigating between
+ *                      different screens in the application.
+ * @param authViewModel The AuthViewModel instance, responsible for handling
+ *                      authentication-related tasks, such as logout.
+ * @param viewModel The GarageViewModel instance, responsible for managing
+ *                  the list of vehicles and performing operations on them,
+ *                  like fetching and deleting.
+ */
 @Composable
 fun GarageScreen(
     navController: NavController,

@@ -30,6 +30,15 @@ import com.ufes.automobile.R
 import com.ufes.automobile.ui.navigation.Route
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
+/**
+ * The LoginScreen composable is responsible for rendering the login/registration screen.
+ * It handles user input for email and password, manages the login/registration mode,
+ * and interacts with the [AuthViewModel] to perform authentication.
+ *
+ * @param navController The navigation controller used to navigate to other screens.
+ * @param viewModel The [AuthViewModel] instance, injected using Hilt, responsible for
+ *        handling authentication logic.
+ */
 @Composable
 fun LoginScreen(
     navController: NavController,

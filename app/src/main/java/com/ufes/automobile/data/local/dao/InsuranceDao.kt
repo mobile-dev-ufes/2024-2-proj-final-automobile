@@ -5,6 +5,10 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.ufes.automobile.data.local.entity.InsuranceEntity
 
+/**
+ * Data Access Object (DAO) interface for interacting with the 'insurance' table in the database.
+ * This interface provides methods for inserting and retrieving insurance records.
+ */
 @Dao
 interface InsuranceDao {
     @Insert

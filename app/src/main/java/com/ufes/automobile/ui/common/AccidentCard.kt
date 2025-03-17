@@ -22,6 +22,35 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Displays an accident's details in a styled card.
+ *
+ * This composable function renders a card that presents the essential information
+ * of an accident, including its description, date, and location. It leverages
+ * Material Design components to ensure a visually appealing and consistent user
+ * interface.
+ *
+ * @param accident The [AccidentEntity] object representing the accident. This object
+ *                 must contain `description`, `date` (as a Long timestamp), and
+ *                 `location` properties.
+ * @param modifier An optional [Modifier] to customize the card's layout, appearance,
+ *                 and behavior. This allows you to apply additional styling or
+ *                 constraints specific to the card's placement in your layout.
+ *                 Defaults to an empty [Modifier].
+ *
+ * Example Usage:
+ * ```
+ * AccidentCard(
+ *     accident = AccidentEntity(
+ *         id = 1,
+ *         description = "Minor collision on Main Street",
+ *         date = System.currentTimeMillis(),
+ *         location = "123 Main Street, Anytown"
+ *     ),
+ *     modifier = Modifier.padding(16.dp)
+ * )
+ * ```
+ */
 @SuppressLint("DefaultLocale")
 @Composable
 fun AccidentCard(

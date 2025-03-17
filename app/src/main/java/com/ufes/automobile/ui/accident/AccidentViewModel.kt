@@ -10,6 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * [AccidentViewModel] is a ViewModel class responsible for managing accident-related data and operations.
+ *
+ * It interacts with the [AccidentRepository] to perform database operations related to accidents.
+ *
+ * @property repository An instance of [AccidentRepository] used to access and manipulate accident data.
+ */
 @HiltViewModel
 class AccidentViewModel @Inject constructor(
     private val repository: AccidentRepository

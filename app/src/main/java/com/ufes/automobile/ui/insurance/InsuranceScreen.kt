@@ -27,6 +27,15 @@ import com.ufes.automobile.R
 import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 
+/**
+ * [InsuranceScreen] is a composable function that displays the insurance details screen.
+ * It allows the user to input and save insurance information for a specific vehicle.
+ *
+ * @param navController The navigation controller used to navigate between screens.
+ * @param vehicleId The ID of the vehicle for which the insurance details are being entered.
+ *                  If null, it means no vehicle is associated, but the screen could still be displayed for other use cases (e.g., adding insurance without a vehicle).
+ * @param viewModel The [InsuranceViewModel] used to interact with the insurance data layer.
+ */
 @Composable
 fun InsuranceScreen(
     navController: NavController,

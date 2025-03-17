@@ -22,6 +22,27 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * A composable function that displays a card representing a maintenance record.
+ *
+ * This card shows the description, date, and cost of a maintenance operation.
+ *
+ * @param maintenance The [MaintenanceEntity] object containing the maintenance data.
+ * @param modifier Optional [Modifier] to customize the card's appearance and layout.
+ *
+ * Example Usage:
+ * ```
+ * MaintenanceCard(
+ *     maintenance = MaintenanceEntity(
+ *         id = 1,
+ *         description = "Oil Change",
+ *         date = System.currentTimeMillis(),
+ *         cost = 50.00
+ *     ),
+ *     modifier = Modifier.padding(16.dp)
+ * )
+ * ```
+ */
 @SuppressLint("DefaultLocale")
 @Composable
 fun MaintenanceCard(

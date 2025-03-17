@@ -28,6 +28,25 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
 
+/**
+ * A composable function that provides a date picker field for selecting a date.
+ *
+ * This composable displays an outlined text field that, when clicked, opens a date picker dialog.
+ * The selected date is then formatted and passed back via the `onPurchaseDateChange` callback.
+ *
+ * @param purchaseDate The currently selected date in "dd/MM/yyyy" format as a String.
+ *                     An empty string indicates that no date is currently selected.
+ * @param onPurchaseDateChange A callback function invoked when the user selects a new date.
+ *                             It receives the newly selected date as a formatted string ("dd/MM/yyyy").
+ * @param modifier Modifier for styling and layout customization of the underlying OutlinedTextField.
+ * @param text The label text displayed above the text field.
+ *
+ * Example Usage:
+ * ```
+ * var selectedDate by remember { mutableStateOf("") }
+ * DatePickerField(
+ *     purchaseDate = selectedDate,
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerField(

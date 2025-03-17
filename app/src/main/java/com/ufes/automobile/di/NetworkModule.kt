@@ -8,6 +8,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/**
+ * NetworkModule
+ *
+ * This Hilt module provides network-related dependencies for the application.
+ * It is installed in the SingletonComponent, making the provided dependencies
+ * available throughout the application's lifecycle.
+ *
+ * Currently, it provides a Retrofit instance configured with a base URL and
+ * Gson converter.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

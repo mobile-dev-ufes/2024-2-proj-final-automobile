@@ -47,6 +47,33 @@ import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
+/**
+ * [MaintenanceScreen] is a composable function that provides a screen for adding or editing maintenance records.
+ *
+ * This screen allows the user to input the description, cost, and date of a maintenance event
+ * and then save it. It also handles navigation back to the previous screen.
+ *
+ * @param vehicleId The ID of the vehicle to which the maintenance record will be associated.
+ *                  If null, it might indicate an error or a scenario where a vehicle hasn't been selected.
+ *                  Should be a valid vehicle id when adding a new record
+ * @param navController The [NavController] used for navigating between screens.
+ * @param viewModel The [MaintenanceViewModel] responsible for handling the business logic related to maintenance operations.
+ *                  It defaults to a viewModel provided by hilt.
+ *
+ * @Usage:
+ *  - Call this function within your composable hierarchy to render the maintenance screen.
+ *  - Ensure that the `vehicleId` is provided if a maintenance record needs to be linked to a specific vehicle.
+ *  - The `navController` should be properly set up for navigation.
+ *
+ * @Functionality:
+ *   - Manages the state of the description, cost, and date inputs.
+ *   - Calls the `saveMaintenance` function in the `MaintenanceViewModel` when the user clicks the save button.
+ *   - Navigates back to the previous screen using `navController.popBackStack()` after saving or when the user clicks the back button.
+ *   - Validates that the description, cost, and date fields are not empty before enabling the save button.
+ *   - Handles parsing the date string to a [java.time.LocalDate] object (implementation details in the `parseDate` function, assumed to be present).
+ *   - Handles converting cost to Float, default to 0f if it is not a number.
+ *   - Uses the [MaintenanceContent] composable to build the layout.
+ */
 @Composable
 fun MaintenanceScreen(
     vehicleId: Int?,

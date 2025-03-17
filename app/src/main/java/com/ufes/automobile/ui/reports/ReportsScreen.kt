@@ -60,6 +60,30 @@ import com.ufes.automobile.ui.common.MaintenanceCard
 import com.ufes.automobile.ui.common.VehicleCard
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
+/**
+ * Displays the reports screen for a specific vehicle.
+ *
+ * This composable function fetches and displays various statistics and reports related to a given vehicle.
+ * It utilizes a [ReportsViewModel] to retrieve data and updates the UI accordingly.
+ *
+ * @param vehicleId The ID of the vehicle for which to display reports. If null, no data will be loaded.
+ * @param navController The [NavController] used for navigating back from the reports screen.
+ * @param viewModel The [ReportsViewModel] responsible for managing and providing the report data.
+ *                  Defaults to a [hiltViewModel] instance.
+ *
+ * The screen displays the following information:
+ *  - Distance monthly data: Statistics related to the distance monthly traveled.
+ *  - Cost distribution: Statistics related to the costs incurred.
+ *  - Cost per kilometer: The calculated cost per kilometer driven.
+ *  - Total recharges cost: The sum of all recharge costs.
+ *  - Total maintenances cost: The sum of all maintenance costs.
+ *  - Total insurances cost: The sum of all insurance costs.
+ *  - Total all cost: The total cost across all categories.
+ *  - Accidents: List of recent accidents of the vehicle.
+ *  - Maintenances: List of recent maintenances of the vehicle.
+ *
+ * The screen also provides a back button to return to the previous screen.
+ */
 @Composable
 fun ReportsScreen(
     vehicleId: Int?,

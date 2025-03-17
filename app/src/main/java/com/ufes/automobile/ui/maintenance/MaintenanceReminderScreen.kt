@@ -25,6 +25,39 @@ import com.ufes.automobile.R
 import com.ufes.automobile.ui.common.DatePickerField
 import com.ufes.automobile.ui.common.parseDate
 
+/**
+ * [MaintenanceReminderScreen] is a composable function responsible for displaying the screen
+ * where users can input and save a maintenance reminder for a specific vehicle.
+ *
+ * @param navController The NavController instance used for navigating between screens.
+ * @param vehicleId The ID of the vehicle for which the maintenance reminder is being created.
+ *                  If null, no reminder will be saved.
+ * @param viewModel The [MaintenanceReminderViewModel] responsible for managing the state
+ *                  and logic related to maintenance reminders. It defaults to an instance
+ *                  provided by Hilt's `hiltViewModel()`.
+ *
+ * This composable maintains the state of the maintenance date and description using `remember`
+ * and `mutableStateOf`. It then utilizes the `MaintenanceReminderContent` composable to render
+ * the UI and handle user input.
+ *
+ * When the user clicks "Save", the function calls the `saveMaintenanceReminder` method of the
+ * `viewModel`, passing the `vehicleId`, description and parsed maintenance date.
+ * After saving the data it navigates back to the previous screen.
+ *
+ * When the user clicks the back button, the function pops the back stack, navigating to the
+ * previous screen.
+ *
+ * The [MaintenanceReminderContent] composable is responsible for rendering the UI elements
+ * (e.g., text fields, buttons) and calling the provided callbacks when events occur.
+ *
+ *  Example usage:
+ *  ```
+ *  MaintenanceReminderScreen(
+ *      navController = myNavController,
+ *      vehicleId = 123
+ *  )
+ *  ```
+ */
 @Composable
 fun MaintenanceReminderScreen(
     navController: NavController,
