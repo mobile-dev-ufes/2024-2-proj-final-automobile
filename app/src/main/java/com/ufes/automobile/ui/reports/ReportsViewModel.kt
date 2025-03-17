@@ -4,13 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
 import com.ufes.automobile.data.local.entity.AccidentEntity
 import com.ufes.automobile.data.local.entity.MaintenanceEntity
 import com.ufes.automobile.domain.repository.AccidentRepository
 import com.ufes.automobile.domain.repository.DisplacementRepository
-import com.ufes.automobile.domain.repository.GarageRepository
 import com.ufes.automobile.domain.repository.InsuranceRepository
 import com.ufes.automobile.domain.repository.MaintenanceRepository
 import com.ufes.automobile.domain.repository.RechargeRepository
@@ -72,19 +70,19 @@ class ReportsViewModel @Inject constructor(
     private val _months = MutableStateFlow<Set<String>>(emptySet())
     val months: StateFlow<Set<String>> = _months.asStateFlow()
 
-    private val _totalRechargesCost = MutableStateFlow<Float>(0.0f)
+    private val _totalRechargesCost = MutableStateFlow(0.0f)
     val totalRechargesCost: StateFlow<Float> = _totalRechargesCost.asStateFlow()
 
-    private val _totalMaintenancesCost = MutableStateFlow<Float>(0.0f)
+    private val _totalMaintenancesCost = MutableStateFlow(0.0f)
     val totalMaintenancesCost: StateFlow<Float> = _totalMaintenancesCost.asStateFlow()
 
-    private val _totalInsurancesCost = MutableStateFlow<Float>(0.0f)
+    private val _totalInsurancesCost = MutableStateFlow(0.0f)
     val totalInsurancesCost: StateFlow<Float> = _totalInsurancesCost.asStateFlow()
 
-    private val _totalAllCost = MutableStateFlow<Float>(0.0f)
+    private val _totalAllCost = MutableStateFlow(0.0f)
     val totalAllCost: StateFlow<Float> = _totalAllCost.asStateFlow()
 
-    private val _costPerKm = MutableStateFlow<Float>(0.0f)
+    private val _costPerKm = MutableStateFlow(0.0f)
     val costPerKm: StateFlow<Float> = _costPerKm.asStateFlow()
 
     private val _accidents = MutableStateFlow<List<AccidentEntity>>(emptyList())
@@ -118,7 +116,7 @@ class ReportsViewModel @Inject constructor(
                 displacementDate.after(sixMonthsAgo) or (displacementDate.get(Calendar.MONTH) == sixMonthsAgo.get(Calendar.MONTH))
             }
 
-            var distancePerMonth = mutableListOf<Float>()
+            val distancePerMonth = mutableListOf<Float>()
             for (i in 0..11) {
                 distancePerMonth.add(i, 0f)
             }
@@ -129,13 +127,13 @@ class ReportsViewModel @Inject constructor(
             }
 
             val now = Calendar.getInstance()
-            var months = mutableSetOf<String>()
+            val months = mutableSetOf<String>()
             var j = sixMonthsAgo.get(Calendar.MONTH)
-            var u = 0
-            if (now.get(Calendar.MONTH) + 1 < 0)
-                u = 11
+            val u: Int
+            u = if (now.get(Calendar.MONTH) + 1 < 0)
+                11
             else
-                u = now.get(Calendar.MONTH) + 1
+                now.get(Calendar.MONTH) + 1
 
             while (j != u) {
                 when (j) {
@@ -158,14 +156,13 @@ class ReportsViewModel @Inject constructor(
             }
             _months.value = months
 
-            var distancePerMonthFiltered = mutableListOf<BarEntry>()
+            val distancePerMonthFiltered = mutableListOf<BarEntry>()
             var i = sixMonthsAgo.get(Calendar.MONTH)
             var k = 0.0f
-            var g = 0
-            if (now.get(Calendar.MONTH) + 1 > 11)
-                g = 0
+            val g: Int = if (now.get(Calendar.MONTH) + 1 > 11)
+                0
             else
-                g = now.get(Calendar.MONTH) + 1
+                now.get(Calendar.MONTH) + 1
 
             while (i != g) {
                 distancePerMonthFiltered.add(BarEntry(k, distancePerMonth[i]))
@@ -177,14 +174,13 @@ class ReportsViewModel @Inject constructor(
 
             _distanceData.value = distancePerMonthFiltered
 
-            var recharges = rechargeRepository.getRechargesByVehicle(vehicleId)
+            val recharges = rechargeRepository.getRechargesByVehicle(vehicleId)
             var maintenances = maintenanceRepository.getMaintenanceByVehicle(vehicleId)
-            var insurances = insuranceRepository.getInsuranceByVehicle(vehicleId)
+            val insurances = insuranceRepository.getInsuranceByVehicle(vehicleId)
 
             var totalRecharges = 0f
             var totalMaintenances = 0f
             var totalInsurances = 0f
-            var totalAll = 0f
 
             recharges.forEach { recharge ->
                 totalRecharges += recharge.cost
@@ -198,7 +194,7 @@ class ReportsViewModel @Inject constructor(
                 totalInsurances += insurance.cost
             }
 
-            totalAll = totalRecharges + totalMaintenances + totalInsurances
+            val totalAll: Float = totalRecharges + totalMaintenances + totalInsurances
 
             _totalRechargesCost.value = totalRecharges
             _totalMaintenancesCost.value = totalMaintenances
@@ -231,7 +227,6 @@ class ReportsViewModel @Inject constructor(
 
             Log.d("ReportsViewModel", "Accidents: ${_accidents.value}")
             Log.d("ReportsViewModel", "Maintenances: ${_maintenances.value}")
-
         }
     }
 }

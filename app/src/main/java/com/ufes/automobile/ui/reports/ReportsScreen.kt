@@ -1,6 +1,5 @@
 package com.ufes.automobile.ui.reports
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,9 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -26,16 +23,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -53,11 +46,11 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.ufes.automobile.R
 import com.ufes.automobile.data.local.entity.AccidentEntity
 import com.ufes.automobile.data.local.entity.MaintenanceEntity
 import com.ufes.automobile.ui.common.AccidentCard
 import com.ufes.automobile.ui.common.MaintenanceCard
-import com.ufes.automobile.ui.common.VehicleCard
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
 /**
@@ -140,7 +133,7 @@ fun ReportsContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Statistics",
+                        text = stringResource(id = R.string.statistics),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -149,7 +142,7 @@ fun ReportsContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -187,7 +180,7 @@ fun ReportsContent(
                     ) {
                         Text(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = "Distance Traveled Monthly (km)",
+                            text = stringResource(id = R.string.distance_traveled),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -199,11 +192,6 @@ fun ReportsContent(
                                 BarChart(context).apply {
                                     description.isEnabled = false // Remover a descrição
                                     legend.isEnabled = false
-                                    //setTouchEnabled(true) // Permitir interação com o usuário
-                                    //isDragEnabled = true // Permitir arrastar o gráfico
-                                    //setScaleEnabled(true) // Permitir zoom
-                                    //setPinchZoom(true) // Permitir zoom com dois dedos
-                                    // Outras configurações do gráfico podem vir aqui
                                     val barDataSet = BarDataSet(
                                         distanceData,
                                         "Distância (km)"
@@ -264,7 +252,7 @@ fun ReportsContent(
                     ) {
                         Text(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = "Cost Distribution",
+                            text = stringResource(id = R.string.cost_distribution),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -332,7 +320,7 @@ fun ReportsContent(
                     ) {
                         Text(
                             modifier = Modifier.padding(16.dp),
-                            text = "Cost per km",
+                            text = stringResource(id = R.string.cost_per_km),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -360,7 +348,7 @@ fun ReportsContent(
                     Text(
                         modifier = Modifier.padding(16.dp)
                             .align(Alignment.CenterHorizontally),
-                        text = "Total Costs",
+                        text = stringResource(id = R.string.total_costs),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -374,7 +362,7 @@ fun ReportsContent(
                         Text(
                             modifier = Modifier.padding(16.dp)
                                 .widthIn(max = 200.dp),
-                            text = "Fuel/Charging",
+                            text = stringResource(id = R.string.fuel_charging),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -395,7 +383,7 @@ fun ReportsContent(
                         Text(
                             modifier = Modifier.padding(16.dp)
                                 .widthIn(max = 200.dp),
-                            text = "Maintenance",
+                            text = stringResource(id = R.string.maintenance),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -416,7 +404,7 @@ fun ReportsContent(
                         Text(
                             modifier = Modifier.padding(16.dp)
                                 .widthIn(max = 200.dp),
-                            text = "Insurance",
+                            text = stringResource(id = R.string.insurance),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -437,7 +425,7 @@ fun ReportsContent(
                         Text(
                             modifier = Modifier.padding(16.dp)
                                 .widthIn(max = 200.dp),
-                            text = "All",
+                            text = stringResource(id = R.string.all),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -465,7 +453,7 @@ fun ReportsContent(
                     Text(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                             .padding(0.dp, 16.dp),
-                        text = "Recent Maintenances",
+                        text = stringResource(id = R.string.recent_maintenances),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -492,7 +480,7 @@ fun ReportsContent(
                     Text(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                             .padding(0.dp, 16.dp),
-                        text = "Recent Accidents",
+                        text = stringResource(id = R.string.recent_accidents),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -521,11 +509,11 @@ fun ReportsScreenPreview() {
         BarEntry(5f, 250f), // Junho: 250 km
     )
     val costData = listOf(
-        PieEntry(300f, "Fuel/Charging"), // 300 unidades em combustível/carga
-        PieEntry(150f, "Maintenance"),   // 150 unidades em manutenção
-        PieEntry(50f, "Insurance"),      // 50 unidades em seguro
+        PieEntry(300f, stringResource(id = R.string.fuel_charging)), // 300 unidades em combustível/carga
+        PieEntry(150f, stringResource(id = R.string.maintenance)),   // 150 unidades em manutenção
+        PieEntry(50f, stringResource(id = R.string.insurance)),      // 50 unidades em seguro
     )
-    val months = setOf("Jan", "Fev", "Mar", "Abr", "Mai", "Jun")
+    val months = setOf(stringResource(R.string.jan), stringResource(R.string.feb), stringResource(R.string.mar), stringResource(R.string.apr), stringResource(R.string.may), stringResource(R.string.jun))
 
     AutoMobileTheme {
         ReportsContent(

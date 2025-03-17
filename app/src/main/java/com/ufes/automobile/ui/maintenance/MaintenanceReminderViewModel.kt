@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ufes.automobile.data.local.entity.MaintenanceReminderEntity
 import com.ufes.automobile.domain.repository.MaintenanceReminderRepository
-import dagger.hilt.android.lifecycle.HiltViewModel;
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

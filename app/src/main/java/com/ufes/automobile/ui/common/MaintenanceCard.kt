@@ -2,7 +2,6 @@ package com.ufes.automobile.ui.common
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
