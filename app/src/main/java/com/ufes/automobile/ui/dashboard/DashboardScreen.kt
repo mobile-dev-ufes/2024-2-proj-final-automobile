@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.sharp.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,7 +32,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -234,25 +231,23 @@ fun DashboardContent(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Purchase date: ${
-                                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
-                                    Date(vehicle.purchaseDate)
-                                )
-                            }",
+                            text = stringResource(id = R.string.purchase_date_dashboard, SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
+                                Date(vehicle.purchaseDate)
+                            )),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         if (vehicle.isElectric) {
                             vehicle.batteryCapacity?.let {
                                 Text(
-                                    text = "Battery Capacity: $it kWh",
+                                    text = stringResource(id = R.string.battery_capacity_dashboard, it),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                             vehicle.range?.let {
                                 Text(
-                                    text = "Range: $it km",
+                                    text = stringResource(id = R.string.range_dashboard, it),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -260,7 +255,7 @@ fun DashboardContent(
                         } else {
                             vehicle.tankCapacity?.let {
                                 Text(
-                                    text = "Tank Capacity: $it L",
+                                    text = stringResource(id = R.string.tank_capacity_dashboard, it),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -303,7 +298,7 @@ fun DashboardContent(
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = if (vehicle.isElectric) "Charge" else "Refuel",
+                                    text = if (vehicle.isElectric) stringResource(id = R.string.charge) else stringResource(id = R.string.refuel),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
@@ -335,7 +330,7 @@ fun DashboardContent(
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = "Displacement",
+                                    text = stringResource(id = R.string.displacement),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
@@ -372,7 +367,7 @@ fun DashboardContent(
                                     modifier = Modifier.size(20.dp),
                                 )
                                 Text(
-                                    text = "Maintenance",
+                                    text = stringResource(id = R.string.maintenance),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
@@ -404,7 +399,7 @@ fun DashboardContent(
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = "Insurance",
+                                    text = stringResource(id = R.string.insurance),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
@@ -436,12 +431,12 @@ fun DashboardContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = Icons.Sharp.Warning, // sharpp
+                                    imageVector = Icons.Sharp.Warning,
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = "Accident",
+                                    text = stringResource(id = R.string.accident),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
@@ -474,7 +469,7 @@ fun DashboardContent(
                                     tint = MaterialTheme.colorScheme.onPrimary
                                 )
                                 Text(
-                                    text = "Maintenance Reminder",
+                                    text = stringResource(id = R.string.maintenance_reminder),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium,
@@ -513,7 +508,7 @@ fun DashboardContent(
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
-                                    text = "Reports",
+                                    text = stringResource(id = R.string.reports),
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.titleMedium
