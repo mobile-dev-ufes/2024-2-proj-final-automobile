@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +27,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -89,7 +89,7 @@ fun AccidentContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Register Accident",
+                        text = stringResource(id = R.string.register_accident),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -98,7 +98,7 @@ fun AccidentContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -131,14 +131,14 @@ fun AccidentContent(
                         purchaseDate = accidentDate,
                         onPurchaseDateChange = onAccidentDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa)"
+                        stringResource(id = R.string.accident_date)
                     )
                     OutlinedTextField(
                         value = description,
                         onValueChange = onDescriptionChange,
                         label = {
                             Text(
-                                "Description",
+                                stringResource(id = R.string.description),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -146,7 +146,7 @@ fun AccidentContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.description),
-                                contentDescription = "Description Icon",
+                                contentDescription = stringResource(id = R.string.description_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -164,7 +164,7 @@ fun AccidentContent(
                         onValueChange = onLocationChange,
                         label = {
                             Text(
-                                "Location",
+                                stringResource(id = R.string.location),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -172,7 +172,7 @@ fun AccidentContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.LocationOn,
-                                contentDescription = "Location Icon",
+                                contentDescription = stringResource(id = R.string.location_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -187,7 +187,6 @@ fun AccidentContent(
                     )
                 }
             }
-
             Button(
                 onClick = onSaveClick,
                 modifier = Modifier
@@ -206,17 +205,13 @@ fun AccidentContent(
                     pressedElevation = 8.dp
                 )
             ) {
-
                 Text(
-                    text = "Save",
+                    text = stringResource(id = R.string.save),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium
                 )
-
             }
-
-
         }
     }
 }

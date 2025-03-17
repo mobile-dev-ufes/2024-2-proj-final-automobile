@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -128,7 +129,7 @@ fun RegistryContent(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Vehicle Registration",
+                        text = stringResource(id = R.string.vehicle_registration),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -137,7 +138,7 @@ fun RegistryContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -171,7 +172,7 @@ fun RegistryContent(
                         onValueChange = onBrandChange,
                         label = {
                             Text(
-                                "Brand",
+                                text = stringResource(id = R.string.brand),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -195,7 +196,7 @@ fun RegistryContent(
                         onValueChange = onModelChange,
                         label = {
                             Text(
-                                "Model",
+                                text = stringResource(id = R.string.model),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -219,7 +220,7 @@ fun RegistryContent(
                         onValueChange = { onManufacturingYearChange(it.filter { c -> c.isDigit() }) },
                         label = {
                             Text(
-                                "Manufacturing Year",
+                                text = stringResource(id = R.string.manufacturing_year),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -243,7 +244,7 @@ fun RegistryContent(
                         purchaseDate = purchaseDate,
                         onPurchaseDateChange = onPurchaseDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Purchase Date (dd/MM/yyyy)"
+                        text = stringResource(id = R.string.purchase_date)
                     )
 
                     Row(
@@ -253,7 +254,7 @@ fun RegistryContent(
                         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Vehicle Type",
+                            text = stringResource(id = R.string.vehicle_type),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(end = 8.dp)
@@ -280,7 +281,7 @@ fun RegistryContent(
                             )
                         )
                         Text(
-                            text = if (isElectric) "Electric" else "Combustion",
+                            text = if (isElectric) stringResource(id = R.string.electric) else stringResource(id = R.string.combustion),
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (isElectric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(start = 8.dp)
@@ -292,7 +293,7 @@ fun RegistryContent(
                             onValueChange = { onBatteryCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
                             label = {
                                 Text(
-                                    "Battery Capacity (kWh)",
+                                    stringResource(id = R.string.battery_capacity),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -318,7 +319,7 @@ fun RegistryContent(
                             onValueChange = { onRangeChange(it.filter { char -> char.isDigit() || char == '.' }) },
                             label = {
                                 Text(
-                                    "Range (km)",
+                                    stringResource(id = R.string.range),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -345,7 +346,7 @@ fun RegistryContent(
                             onValueChange = { onTankCapacityChange(it.filter { char -> char.isDigit() || char == '.' }) },
                             label = {
                                 Text(
-                                    "Tank Capacity (L)",
+                                    stringResource(id = R.string.tank_capacity),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -387,7 +388,7 @@ fun RegistryContent(
                         )
                     ) {
                         Text(
-                            text = "Save",
+                            stringResource(id = R.string.save),
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium

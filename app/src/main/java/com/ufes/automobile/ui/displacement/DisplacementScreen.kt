@@ -33,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -95,7 +96,7 @@ fun DisplacementContent(
             TopAppBar(
                 title = {
                     Text(
-                        "Displacement Registry",
+                        stringResource(id = R.string.displacement_registry),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -104,7 +105,7 @@ fun DisplacementContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -137,7 +138,7 @@ fun DisplacementContent(
                         onValueChange = { onDistanceChange(it.filter { char -> char.isDigit() || char == '.' }) },
                         label = {
                             Text(
-                                "Distance (km)",
+                                stringResource(id = R.string.distance),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -163,7 +164,7 @@ fun DisplacementContent(
                         onValueChange = onDescriptionChange,
                         label = {
                             Text(
-                                "Description",
+                                stringResource(id = R.string.description),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -187,7 +188,7 @@ fun DisplacementContent(
                         purchaseDate = date,
                         onPurchaseDateChange = onDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa)"
+                        stringResource(id = R.string.date)
                     )
                 }
             }
@@ -208,7 +209,7 @@ fun DisplacementContent(
                 )
             ) {
                 Text(
-                    text = "Save",
+                    text = stringResource(id = R.string.save),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium

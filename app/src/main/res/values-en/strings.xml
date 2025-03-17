@@ -1,18 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="amount_l">Amount (L)</string>
+    <string name="app_name">AutoMobile</string>
+    <string name="type">Type</string>
     <string name="electric">Electric</string>
     <string name="combustion">Combustion</string>
-    <string name="type">Type</string>
+    <string name="amount_l">Amount (L)</string>
     <string name="description">Description</string>
     <string name="cost">Cost ($)</string>
     <string name="date">Date (dd/mm/yyyy)</string>
     <string name="save">Save</string>
-    <string name="refueling_registry">Refueling Registry</string>
     <string name="recharging_registry">Recharging Registry</string>
     <string name="back">Back</string>
     <string name="amount_kwh">Amount (kWh)</string>
-    <string name="app_name">AutoMobile</string>
     <string name="vehicle_registration">Vehicle Registration</string>
     <string name="brand">Brand</string>
     <string name="model">Model</string>
@@ -22,6 +20,7 @@
     <string name="battery_capacity">Battery Capacity (kWh)</string>
     <string name="range">Range (km)</string>
     <string name="tank_capacity">Tank Capacity (L)</string>
+    <string name="refueling_registry">Refueling Registry</string>
     <string name="maintenance_registry">Maintenance Registry</string>
     <string name="register_maintenance_reminder">Register Maintenance Reminder</string>
     <string name="maintenance_date">Next Maintenance Date (dd/mm/yyyy)</string>
@@ -49,7 +48,6 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="app_logo">App Logo</string>
-    <string name="email" translatable="false">E-mail</string>
     <string name="email_icon">E-mail Icon</string>
     <string name="password">Password</string>
     <string name="password_icon">Password Icon</string>

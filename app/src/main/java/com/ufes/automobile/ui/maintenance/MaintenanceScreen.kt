@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -99,7 +100,7 @@ fun MaintenanceContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Maintenance Registry",
+                        stringResource(id = R.string.maintenance_registry),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -108,7 +109,7 @@ fun MaintenanceContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -141,7 +142,7 @@ fun MaintenanceContent(
                         onValueChange = onDescriptionChange,
                         label = {
                             Text(
-                                "Description",
+                                stringResource(id = R.string.description),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -166,7 +167,7 @@ fun MaintenanceContent(
                         onValueChange = { onCostChange(it.filter { char -> char.isDigit() || char == '.' }) },
                         label = {
                             Text(
-                                "Cost ($)",
+                                stringResource(id = R.string.cost),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -191,8 +192,8 @@ fun MaintenanceContent(
                         purchaseDate = date,
                         onPurchaseDateChange = onDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa)"
-                    )
+                        stringResource(id = R.string.date)
+                        )
                 }
             }
             Button(
@@ -212,7 +213,7 @@ fun MaintenanceContent(
                 )
             ) {
                 Text(
-                    text = "Save",
+                    stringResource(id = R.string.save),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium

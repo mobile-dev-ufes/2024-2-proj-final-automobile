@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -87,7 +88,7 @@ fun LoginContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (isLoginMode) "Login" else "Register",
+                        text = if (isLoginMode) stringResource(id = R.string.login) else stringResource(id = R.string.register),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -96,7 +97,7 @@ fun LoginContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -118,7 +119,7 @@ fun LoginContent(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.app_logo),
-                contentDescription = "App Logo",
+                contentDescription = stringResource(id = R.string.app_logo),
                 modifier = Modifier
                     .size(100.dp)
                     .padding(bottom = 16.dp)
@@ -138,7 +139,7 @@ fun LoginContent(
                         onValueChange = onEmailChange,
                         label = {
                             Text(
-                                "E-mail",
+                                stringResource(id = R.string.email),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -146,7 +147,7 @@ fun LoginContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Email,
-                                contentDescription = "Email Icon",
+                                contentDescription = stringResource(id = R.string.email_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -162,7 +163,7 @@ fun LoginContent(
                         onValueChange = onPasswordChange,
                         label = {
                             Text(
-                                "Password",
+                                stringResource(id = R.string.password),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -170,7 +171,7 @@ fun LoginContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Lock,
-                                contentDescription = "Password Icon",
+                                contentDescription = stringResource(id = R.string.password_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -178,7 +179,7 @@ fun LoginContent(
                             IconButton(onClick = { onShowPasswordChange(!showPassword) }) {
                                 Icon(
                                     imageVector = if (showPassword) Icons.Default.Done else Icons.Default.Close,
-                                    contentDescription = if (showPassword) "Hide Password" else "Show Password",
+                                    contentDescription = if (showPassword) stringResource(id = R.string.hide_password) else stringResource(id = R.string.show_password),
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
@@ -224,7 +225,7 @@ fun LoginContent(
                     )
                 } else {
                     Text(
-                        text = if (isLoginMode) "Log In" else "Register",
+                        text = if (isLoginMode) stringResource(id = R.string.login) else stringResource(id = R.string.register),
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium
@@ -234,7 +235,7 @@ fun LoginContent(
 
             TextButton(onClick = { onIsLoginModeChange(!isLoginMode) }) {
                 Text(
-                    text = if (isLoginMode) "Create an account" else "I have an account",
+                    text = if (isLoginMode) stringResource(id = R.string.create_account) else stringResource(id = R.string.have_account),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -244,7 +245,7 @@ fun LoginContent(
                 when {
                     state.isSuccess -> {
                         Text(
-                            "Success! Redirecting...",
+                            stringResource(id = R.string.sucess),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
