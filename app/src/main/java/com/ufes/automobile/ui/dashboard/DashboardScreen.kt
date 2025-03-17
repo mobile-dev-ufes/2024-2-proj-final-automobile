@@ -34,6 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -328,7 +329,7 @@ fun DashboardContent(
                                 Icon(
                                     imageVector = ImageVector.vectorResource(id = R.drawable.car_repair),
                                     contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(20.dp),
                                 )
                                 Text(
                                     text = "Maintenance",
@@ -429,13 +430,16 @@ fun DashboardContent(
                                 Icon(
                                     imageVector = ImageVector.vectorResource(id = R.drawable.event),
                                     contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(20.dp),
+                                    tint = MaterialTheme.colorScheme.onPrimary
                                 )
                                 Text(
                                     text = "Maintenance Reminder",
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleMedium,
+                                    lineHeight = 17.sp,
+                                    color = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
                         }
