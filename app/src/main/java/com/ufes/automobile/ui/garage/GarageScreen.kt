@@ -41,11 +41,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ufes.automobile.R
 import com.ufes.automobile.domain.model.Vehicle
 import com.ufes.automobile.ui.auth.AuthViewModel
 import com.ufes.automobile.ui.common.VehicleCard
@@ -91,7 +93,7 @@ fun GarageContent(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Garage",
+                        text = stringResource(id = R.string.garage),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -100,7 +102,7 @@ fun GarageContent(
                     IconButton(onClick = onLogoutClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = "Logout",
+                            contentDescription = stringResource(id = R.string.logout),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -124,7 +126,7 @@ fun GarageContent(
             ) {
                 Icon(
                     Icons.Default.Add,
-                    contentDescription = "Add Vehicle",
+                    contentDescription = stringResource(id = R.string.add_vehicle),
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -135,7 +137,7 @@ fun GarageContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background) // Simplifiquei a camada de fundo
+                .background(MaterialTheme.colorScheme.background)
         ) {
             if (vehicles.isEmpty()) {
                 Box(
@@ -145,7 +147,7 @@ fun GarageContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No vehicles added yet.",
+                        stringResource(R.string.no_vehicles_added),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                         textAlign = TextAlign.Center
@@ -174,7 +176,7 @@ fun GarageContent(
                             modifier = Modifier.background(MaterialTheme.colorScheme.surface)
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Delete Vehicle", color = MaterialTheme.colorScheme.error) },
+                                text = { Text(stringResource(R.string.delete_vehicle), color = MaterialTheme.colorScheme.error) },
                                 onClick = {
                                     showMenu = false
                                     showDialog = true
@@ -184,8 +186,8 @@ fun GarageContent(
                         if (showDialog) {
                             AlertDialog(
                                 onDismissRequest = { showDialog = false },
-                                title = { Text("Delete Vehicle") },
-                                text = { Text("Are you sure you want to delete ${vehicle.brand} ${vehicle.model}?") },
+                                title = { Text(stringResource(R.string.delete_vehicle)) },
+                                text = { Text(stringResource(id = R.string.confirm_message, vehicle.brand, vehicle.model)) },
                                 confirmButton = {
                                     TextButton(
                                         onClick = {
@@ -193,12 +195,12 @@ fun GarageContent(
                                             showDialog = false
                                         }
                                     ) {
-                                        Text("Delete", color = MaterialTheme.colorScheme.error)
+                                        Text(stringResource(id = R.string.delete), color = MaterialTheme.colorScheme.error)
                                     }
                                 },
                                 dismissButton = {
                                     TextButton(onClick = { showDialog = false }) {
-                                        Text("Cancel")
+                                        Text(stringResource(id = R.string.cancel))
                                     }
                                 }
                             )

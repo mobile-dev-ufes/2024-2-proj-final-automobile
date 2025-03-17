@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -86,7 +87,7 @@ fun RechargeContent(
             TopAppBar(
                 title = {
                     Text(
-                        if (isElectric) "Recharge Registry" else "Refueling Registry",
+                        if (isElectric) stringResource(id = R.string.recharging_registry) else stringResource(id = R.string.refueling_registry),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -95,7 +96,7 @@ fun RechargeContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -131,7 +132,7 @@ fun RechargeContent(
                         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                     ) {
                         Text(
-                            "Type",
+                            stringResource(id = R.string.type),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(end = 8.dp)
@@ -148,7 +149,7 @@ fun RechargeContent(
                             )
                         )
                         Text(
-                            text = if (isElectric) "Electric" else "Combustion",
+                            text = if (isElectric) stringResource(id = R.string.electric) else stringResource(id = R.string.combustion),
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (isElectric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(start = 8.dp)
@@ -159,7 +160,7 @@ fun RechargeContent(
                         onValueChange = onAmountChange,
                         label = {
                             Text(
-                                if (isElectric) "Amount (kWh)" else "Amount (L)",
+                                if (isElectric) stringResource(id = R.string.amount_kwh) else stringResource(id = R.string.amount_l),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -183,7 +184,7 @@ fun RechargeContent(
                         onValueChange = onDescriptionChange,
                         label = {
                             Text(
-                                "Description",
+                                stringResource(id = R.string.description),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -206,7 +207,7 @@ fun RechargeContent(
                         onValueChange = onCostChange,
                         label = {
                             Text(
-                                "Cost ($)",
+                                stringResource(id = R.string.cost),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -229,7 +230,7 @@ fun RechargeContent(
                         purchaseDate = date,
                         onPurchaseDateChange = onDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Date (dd/mm/aaaa)"
+                        stringResource(id = R.string.date)
                     )
                 }
             }
@@ -250,7 +251,7 @@ fun RechargeContent(
                 )
             ) {
                 Text(
-                    text = "Save",
+                    stringResource(id = R.string.save),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium

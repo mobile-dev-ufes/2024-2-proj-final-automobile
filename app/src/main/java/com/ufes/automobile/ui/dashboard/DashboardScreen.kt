@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -136,7 +137,7 @@ fun DashboardContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Vehicle Dashboard",
+                        stringResource(id = R.string.vehicle_dashboard),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -145,7 +146,7 @@ fun DashboardContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -184,12 +185,13 @@ fun DashboardContent(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Year: ${vehicle.manufacturingYear}",
+                            stringResource(R.string.year, vehicle.manufacturingYear),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
+                        val typeText = if (vehicle.isElectric) stringResource(id = R.string.electric) else stringResource(id = R.string.combustion)
                         Text(
-                            text = "Type: ${if (vehicle.isElectric) "Electric" else "Combustion"}",
+                            text = stringResource(id = R.string.vehicle_type, typeText),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )

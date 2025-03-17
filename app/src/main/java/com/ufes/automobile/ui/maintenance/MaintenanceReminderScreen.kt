@@ -16,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -67,7 +68,7 @@ fun MaintenanceReminderContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Register Maintenance Reminder",
+                        stringResource(id = R.string.register_maintenance_reminder),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -76,7 +77,7 @@ fun MaintenanceReminderContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            stringResource(id = R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -109,14 +110,14 @@ fun MaintenanceReminderContent(
                         purchaseDate = maintenanceDate,
                         onPurchaseDateChange = onMaintenanceDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Next Maintenance Date (dd/mm/yyyy))"
-                    )
+                        stringResource(id = R.string.maintenance_date),
+                        )
                     OutlinedTextField(
                         value = description,
                         onValueChange = onDescriptionChange,
                         label = {
                             Text(
-                                "Description",
+                                stringResource(id = R.string.description),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -124,7 +125,7 @@ fun MaintenanceReminderContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.description),
-                                contentDescription = "Description Icon",
+                                contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -159,7 +160,7 @@ fun MaintenanceReminderContent(
                 )
             ) {
                 Text(
-                    text = "Save",
+                    stringResource(id = R.string.save),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium

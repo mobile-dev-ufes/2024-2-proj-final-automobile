@@ -16,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -93,7 +94,7 @@ fun InsuranceContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Register Insurance",
+                        text = stringResource(R.string.register_insurance),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -102,7 +103,7 @@ fun InsuranceContent(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.back),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -136,7 +137,7 @@ fun InsuranceContent(
                         onValueChange = onInsurerChange,
                         label = {
                             Text(
-                                "Insurer",
+                                stringResource(R.string.insurer),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -144,7 +145,7 @@ fun InsuranceContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.shield),
-                                contentDescription = "Insurer Icon",
+                                contentDescription = stringResource(R.string.insurer_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -159,7 +160,7 @@ fun InsuranceContent(
                         onValueChange = onPolicyNumberChange,
                         label = {
                             Text(
-                                "Policy Number",
+                                stringResource(R.string.policy_number),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -167,7 +168,7 @@ fun InsuranceContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Info,
-                                contentDescription = "Policy Number Icon",
+                                contentDescription = stringResource(R.string.policy_number_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -182,7 +183,7 @@ fun InsuranceContent(
                         onValueChange = onAssistanceDetailsChange,
                         label = {
                             Text(
-                                "Assistance Details",
+                                stringResource(R.string.assistance_details),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -190,7 +191,7 @@ fun InsuranceContent(
                         leadingIcon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.description),
-                                contentDescription = "Assistance Details Icon",
+                                contentDescription = stringResource(R.string.assistance_details_icon),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
@@ -207,20 +208,20 @@ fun InsuranceContent(
                         purchaseDate = startDate,
                         onPurchaseDateChange = onStartDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "Start Date (dd/mm/aaaa)"
+                        stringResource(R.string.start_date)
                     )
                     DatePickerField(
                         purchaseDate = endDate,
                         onPurchaseDateChange = onEndDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        "End Date (dd/mm/aaaa)"
+                        stringResource(R.string.end_date)
                     )
                     OutlinedTextField(
                         value = cost,
                         onValueChange = { onCostChange(it.filter { char -> char.isDigit() || char == '.' }) },
                         label = {
                             Text(
-                                "Monthly Cost ($)",
+                                stringResource(R.string.monthly_cost),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -262,7 +263,7 @@ fun InsuranceContent(
             ) {
 
                     Text(
-                        text = "Save",
+                        stringResource(R.string.save),
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium
