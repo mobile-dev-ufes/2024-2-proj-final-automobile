@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ufes.automobile.ui.common.parseDate
 import com.ufes.automobile.R
+import com.ufes.automobile.ui.common.DatePickerField
 
 @Composable
 fun AccidentScreen(
@@ -126,28 +127,11 @@ fun AccidentContent(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    OutlinedTextField(
-                        value = accidentDate,
-                        onValueChange = onAccidentDateChange,
-                        label = {
-                            Text(
-                                "Accident Date (dd/mm/yyyy)",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.DateRange,
-                                contentDescription = "Accident Date Icon",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
+                    DatePickerField(
+                        purchaseDate = accidentDate,
+                        onPurchaseDateChange = onAccidentDateChange,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
+                        "Date (dd/mm/aaaa)"
                     )
                     OutlinedTextField(
                         value = description,
