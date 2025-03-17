@@ -8,20 +8,23 @@ import androidx.navigation.NavController
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ufes.automobile.R
+import com.ufes.automobile.ui.common.DatePickerField
+import com.ufes.automobile.ui.common.parseDate
 
 @Composable
 fun InsuranceScreen(
@@ -32,6 +35,9 @@ fun InsuranceScreen(
     var insurer by remember { mutableStateOf("") }
     var policyNumber by remember { mutableStateOf("") }
     var assistanceDetails by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf("") }
+    var endDate by remember { mutableStateOf("") }
+    var cost by remember { mutableStateOf("") }
 
     InsuranceContent(
         insurer = insurer,
@@ -40,13 +46,22 @@ fun InsuranceScreen(
         onPolicyNumberChange = { policyNumber = it },
         assistanceDetails = assistanceDetails,
         onAssistanceDetailsChange = { assistanceDetails = it },
+        startDate = startDate,
+        onStartDateChange = { startDate = it },
+        endDate = endDate,
+        onEndDateChange = { endDate = it },
+        cost = cost,
+        onCostChange = { cost = it },
         onSaveClick = {
             vehicleId?.let {
                 viewModel.saveInsurance(
                     vehicleId = it,
                     insurer = insurer,
                     policyNumber = policyNumber,
-                    assistanceDetails = assistanceDetails
+                    assistanceDetails = assistanceDetails, // Add comma here
+                    startDate = parseDate(startDate),
+                    endDate = parseDate(endDate),
+                    cost = cost.toFloatOrNull() ?: 0f
                 )
                 navController.popBackStack()
             }
@@ -65,7 +80,13 @@ fun InsuranceContent(
     assistanceDetails: String,
     onAssistanceDetailsChange: (String) -> Unit,
     onSaveClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    startDate: String,
+    onStartDateChange: (String) -> Unit,
+    endDate: String,
+    onEndDateChange: (String) -> Unit,
+    cost: String,
+    onCostChange: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -182,6 +203,44 @@ fun InsuranceContent(
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
                     )
+                    DatePickerField(
+                        purchaseDate = startDate,
+                        onPurchaseDateChange = onStartDateChange,
+                        modifier = Modifier.fillMaxWidth(),
+                        "Start Date (dd/mm/aaaa)"
+                    )
+                    DatePickerField(
+                        purchaseDate = endDate,
+                        onPurchaseDateChange = onEndDateChange,
+                        modifier = Modifier.fillMaxWidth(),
+                        "End Date (dd/mm/aaaa)"
+                    )
+                    OutlinedTextField(
+                        value = cost,
+                        onValueChange = { onCostChange(it.filter { char -> char.isDigit() || char == '.' }) },
+                        label = {
+                            Text(
+                                "Monthly Cost ($)",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.attach_money),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    )
                 }
             }
 
@@ -190,7 +249,7 @@ fun InsuranceContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = insurer.isNotBlank() && policyNumber.isNotBlank() && assistanceDetails.isNotBlank(),
+                enabled = insurer.isNotBlank() && policyNumber.isNotBlank() && assistanceDetails.isNotBlank() && startDate.isNotBlank() && endDate.isNotBlank() && cost.isNotBlank(),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (insurer.isNotBlank() && policyNumber.isNotBlank() && assistanceDetails.isNotBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
@@ -227,7 +286,13 @@ fun InsuranceRegistrationContentPreview() {
             assistanceDetails = "Telephone: 27 98899 2002, Insurance Company Fulano da Silva.",
             onAssistanceDetailsChange = {},
             onSaveClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            startDate = "01/01/2023",
+            onStartDateChange = {},
+            endDate = "01/01/2023",
+            onEndDateChange = {},
+            cost = "160.00",
+            onCostChange = {}
         )
     }
 }

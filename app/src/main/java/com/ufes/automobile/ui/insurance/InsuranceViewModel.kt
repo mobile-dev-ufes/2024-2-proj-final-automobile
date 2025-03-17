@@ -17,14 +17,20 @@ class InsuranceViewModel @Inject constructor(
         vehicleId: Int,
         insurer: String,
         policyNumber: String,
-        assistanceDetails: String
+        assistanceDetails: String,
+        startDate: Long,
+        endDate: Long,
+        cost: Float
     ) {
         viewModelScope.launch {
             val insurance = InsuranceEntity(
                 vehicleId = vehicleId,
                 insurer = insurer,
                 policyNumber = policyNumber,
-                assistanceDetails = assistanceDetails
+                assistanceDetails = assistanceDetails,
+                startDate = startDate,
+                endDate = endDate,
+                cost = cost
             )
             repository.addInsurance(insurance)
         }

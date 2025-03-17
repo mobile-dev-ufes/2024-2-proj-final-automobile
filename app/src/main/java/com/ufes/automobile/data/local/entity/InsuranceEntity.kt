@@ -22,4 +22,7 @@ data class InsuranceEntity(
     val insurer: String,
     val policyNumber: String,
     val assistanceDetails: String,
+    val startDate: Long,
+    val endDate: Long,
+    val cost: Float
 )

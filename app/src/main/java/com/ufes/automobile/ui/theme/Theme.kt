@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 private val LightColorScheme = lightColorScheme(
     primary = BluePrimary,
     onPrimary = White,
-    primaryContainer = LightBlue,
+    primaryContainer = Color(0xFF54B472),
     onPrimaryContainer = Black,
 
     secondary = Danube,
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 
     tertiary = Yellow,
     onTertiary = Black,
-    tertiaryContainer = Color(0xFFFFE5A3), // Amarelo mais suave para evitar cansaço visual
+    tertiaryContainer = Color(0xFF89DE69), // Amarelo mais suave para evitar cansaço visual
     onTertiaryContainer = Black,
 
     error = Color(0xFFD32F2F),
