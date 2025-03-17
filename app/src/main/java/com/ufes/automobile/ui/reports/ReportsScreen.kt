@@ -130,6 +130,8 @@ fun ReportsContent(
     maintenances: List<MaintenanceEntity> = emptyList(),
     distanceKmLabel: String
 ) {
+    val onSurfaceColor = MaterialTheme.colorScheme.onSurface.hashCode()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -201,9 +203,15 @@ fun ReportsContent(
                                         android.R.color.holo_blue_dark
                                     )
 
+                                    xAxis.textColor = onSurfaceColor // Cor do texto no eixo X (meses)
                                     xAxis.textSize = 14f
                                     xAxis.setDrawGridLines(false)
                                     xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                                    axisLeft.textColor = onSurfaceColor // Cor do texto no eixo Y (valores)
+                                    axisLeft.setDrawGridLines(false)
+
+                                    axisRight.isEnabled = false // Desativar eixo Y direito
 
                                     val barData = BarData(barDataSet)
                                     data = barData
@@ -268,6 +276,7 @@ fun ReportsContent(
 
                                     legend.isEnabled = true
                                     legend.textSize = 14f
+                                    legend.textColor = onSurfaceColor // Usar a cor passada como parâmetro
 
                                     val pieDataSet = PieDataSet(costData, "")
                                     pieDataSet.colors = ColorTemplate.LIBERTY_COLORS.toList()
@@ -284,6 +293,7 @@ fun ReportsContent(
                                 chart.description.isEnabled = false
                                 chart.legend.isEnabled = true
                                 chart.legend.textSize = 14f
+                                chart.legend.textColor = onSurfaceColor // Garantir que a cor da legenda seja atualizada
                                 val pieDataSet = PieDataSet(costData, "")
                                 pieDataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
                                 pieDataSet.setDrawValues(false)
