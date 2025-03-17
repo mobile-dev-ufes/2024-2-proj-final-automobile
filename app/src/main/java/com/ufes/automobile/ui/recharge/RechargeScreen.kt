@@ -128,17 +128,18 @@ fun RechargeContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                     ) {
                         Text(
                             "Type",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(end = 8.dp)
                         )
                         Switch(
                             checked = isElectric,
                             onCheckedChange = onIsElectricChange,
+                            modifier = Modifier.padding(horizontal = 8.dp),
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = MaterialTheme.colorScheme.primary,
                                 checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
@@ -147,9 +148,10 @@ fun RechargeContent(
                             )
                         )
                         Text(
-                            if (isElectric) "Electric" else "Combustion",
+                            text = if (isElectric) "Electric" else "Combustion",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = if (isElectric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
                     OutlinedTextField(
