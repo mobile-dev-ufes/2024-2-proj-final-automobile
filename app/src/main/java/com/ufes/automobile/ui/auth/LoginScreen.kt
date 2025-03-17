@@ -2,7 +2,6 @@ package com.ufes.automobile.ui.auth
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -71,8 +70,7 @@ fun LoginScreen(
         onShowPasswordChange = { showPassword = it },
         authState = authState,
         onLoginClick = { viewModel.login(email, password) },
-        onRegisterClick = { viewModel.register(email, password) },
-        onBackClick = { navController.popBackStack() }
+        onRegisterClick = { viewModel.register(email, password) }
     )
 }
 
@@ -90,7 +88,6 @@ fun LoginContent(
     authState: AuthState?,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
-    onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -101,15 +98,6 @@ fun LoginContent(
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
@@ -254,7 +242,7 @@ fun LoginContent(
                 when {
                     state.isSuccess -> {
                         Text(
-                            stringResource(id = R.string.sucess),
+                            stringResource(id = R.string.success),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -290,8 +278,7 @@ fun LoginContentPreview() {
             onShowPasswordChange = {},
             authState = null,
             onLoginClick = {},
-            onRegisterClick = {},
-            onBackClick = {}
+            onRegisterClick = {}
         )
     }
 }
