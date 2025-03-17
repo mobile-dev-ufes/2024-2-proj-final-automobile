@@ -86,7 +86,6 @@ class ReportsViewModel @Inject constructor(
                 displacementDate.after(sixMonthsAgo) or (displacementDate.get(Calendar.MONTH) == sixMonthsAgo.get(Calendar.MONTH))
             }
 
-            var months = mutableSetOf<String>()
             var distancePerMonth = mutableListOf<Float>()
             for (i in 0..11) {
                 distancePerMonth.add(i, 0f)
@@ -95,7 +94,19 @@ class ReportsViewModel @Inject constructor(
             displacements.forEach{displacement ->
                 val month = Calendar.getInstance().apply { time = Date(displacement.date) }.get(Calendar.MONTH)
                 distancePerMonth[month] += displacement.distance
-                when (month) {
+            }
+
+            val now = Calendar.getInstance()
+            var months = mutableSetOf<String>()
+            var j = sixMonthsAgo.get(Calendar.MONTH)
+            var u = 0
+            if (now.get(Calendar.MONTH) + 1 < 0)
+                u = 11
+            else
+                u = now.get(Calendar.MONTH) + 1
+
+            while (j != u) {
+                when (j) {
                     0 -> months.add("Jan")
                     1 -> months.add("Fev")
                     2 -> months.add("Mar")
@@ -109,12 +120,13 @@ class ReportsViewModel @Inject constructor(
                     10 -> months.add("Nov")
                     11 -> months.add("Dez")
                 }
+                j++
+                if (j > 11)
+                    j = 0
             }
-
             _months.value = months
 
             var distancePerMonthFiltered = mutableListOf<BarEntry>()
-            val now = Calendar.getInstance()
             var i = sixMonthsAgo.get(Calendar.MONTH)
             var k = 0.0f
             var g = 0
