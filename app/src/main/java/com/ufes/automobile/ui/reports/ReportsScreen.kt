@@ -3,11 +3,17 @@ package com.ufes.automobile.ui.reports
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -20,9 +26,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +53,11 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.ufes.automobile.data.local.entity.AccidentEntity
+import com.ufes.automobile.data.local.entity.MaintenanceEntity
+import com.ufes.automobile.ui.common.AccidentCard
+import com.ufes.automobile.ui.common.MaintenanceCard
+import com.ufes.automobile.ui.common.VehicleCard
 import com.ufes.automobile.ui.theme.AutoMobileTheme
 
 @Composable
@@ -57,12 +73,26 @@ fun ReportsScreen(
     val distanceData = viewModel.distanceData.collectAsState().value
     val costData = viewModel.costData.collectAsState().value
     val months = viewModel.months.collectAsState().value
+    val totalRechargesCost = viewModel.totalRechargesCost.collectAsState().value
+    val totalMaintenancesCost = viewModel.totalMaintenancesCost.collectAsState().value
+    val totalInsurancesCost = viewModel.totalInsurancesCost.collectAsState().value
+    val totalAllCost = viewModel.totalAllCost.collectAsState().value
+    val costPerKm = viewModel.costPerKm.collectAsState().value
+    val accidents = viewModel.accidents.collectAsState().value
+    val maintenances = viewModel.maintenances.collectAsState().value
 
     ReportsContent(
         onBackClick = { navController.popBackStack() },
         distanceData = distanceData,
         costData = costData,
-        months = months
+        months = months,
+        totalRechargesCost = totalRechargesCost,
+        totalMaintenancesCost = totalMaintenancesCost,
+        totalInsurancesCost = totalInsurancesCost,
+        totalAllCost = totalAllCost,
+        costPerKm = costPerKm,
+        accidents = accidents,
+        maintenances = maintenances
     )
 }
 
@@ -73,6 +103,13 @@ fun ReportsContent(
     distanceData: List<BarEntry>,
     costData: List<PieEntry>,
     months: Set<String>,
+    totalRechargesCost: Float = 0f,
+    totalMaintenancesCost: Float = 0f,
+    totalInsurancesCost: Float = 0f,
+    totalAllCost: Float = 0f,
+    costPerKm: Float = 0f,
+    accidents: List<AccidentEntity> = emptyList(),
+    maintenances: List<MaintenanceEntity> = emptyList()
 ){
     Scaffold(
         topBar = {
@@ -100,143 +137,348 @@ fun ReportsContent(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 8.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                )
-            ) {
-                Column(
+            item {
+                Card(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = "Distance Traveled Monthly (km)",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        AndroidView(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp),
+                            factory = { context ->
+                                BarChart(context).apply {
+                                    description.isEnabled = false // Remover a descrição
+                                    legend.isEnabled = false
+                                    //setTouchEnabled(true) // Permitir interação com o usuário
+                                    //isDragEnabled = true // Permitir arrastar o gráfico
+                                    //setScaleEnabled(true) // Permitir zoom
+                                    //setPinchZoom(true) // Permitir zoom com dois dedos
+                                    // Outras configurações do gráfico podem vir aqui
+                                    val barDataSet = BarDataSet(
+                                        distanceData,
+                                        "Distância (km)"
+                                    ) // Rótulo do conjunto de dados
+
+                                    barDataSet.color = ContextCompat.getColor(
+                                        context,
+                                        android.R.color.holo_blue_dark
+                                    ) // Cor do conjunto de dados
+
+                                    xAxis.textSize = 14f
+                                    xAxis.setDrawGridLines(false)
+                                    xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                                    val barData = BarData(barDataSet)
+                                    data = barData
+
+                                    animateY(1000) // Animação de entrada
+
+                                    invalidate() // Atualizar o gráfico
+                                }
+                            },
+                            update = { chart ->
+                                val barDataSet = BarDataSet(distanceData, "Distância (km)")
+
+                                val xAxisVals = mutableListOf<String>()
+                                months.forEachIndexed { index, value ->
+                                    xAxisVals.add(index, value)
+                                }
+
+                                val xAxisFormatter = IndexAxisValueFormatter(xAxisVals)
+                                chart.xAxis.valueFormatter = xAxisFormatter
+
+                                val barData = BarData(barDataSet)
+                                chart.data = barData
+                                chart.invalidate()
+                            }
+                        )
+                    }
+                }
+            }
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = "Cost Distribution",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        AndroidView(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            factory = { context ->
+                                PieChart(context).apply {
+                                    description.isEnabled = false
+                                    setUsePercentValues(true)
+                                    isDrawHoleEnabled = true
+                                    holeRadius = 40f
+                                    transparentCircleRadius = 45f
+
+                                    legend.isEnabled = true // Garante que a legenda esteja visível
+                                    legend.textSize = 14f
+
+                                    val pieDataSet = PieDataSet(costData, "")
+                                    pieDataSet.colors = ColorTemplate.LIBERTY_COLORS.toList()
+                                    pieDataSet.setDrawValues(false)
+                                    setDrawEntryLabels(false)
+
+                                    val pieData = PieData(pieDataSet)
+                                    data = pieData
+                                    invalidate()
+                                }
+                            },
+                            update = { chart ->
+                                chart.setDrawEntryLabels(false)
+                                chart.description.isEnabled = false
+                                chart.legend.isEnabled =
+                                    true // Garante que a legenda esteja visível
+                                chart.legend.textSize = 14f
+                                val pieDataSet = PieDataSet(costData, "")
+                                pieDataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+                                pieDataSet.setDrawValues(false)
+
+                                val pieData = PieData(pieDataSet)
+                                chart.data = pieData
+                                chart.invalidate()
+                            }
+                        )
+                    }
+                }
+            }
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp, 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = "Cost per km",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = String.format("$%.2f", costPerKm),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
+            }
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 ) {
                     Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = "Distance Traveled Monthly (km)",
+                        modifier = Modifier.padding(16.dp)
+                            .align(Alignment.CenterHorizontally),
+                        text = "Total Costs",
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
-                    AndroidView(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(300.dp),
-                        factory = { context ->
-                            BarChart(context).apply {
-                                description.isEnabled = false // Remover a descrição
-                                legend.isEnabled = false
-                                //setTouchEnabled(true) // Permitir interação com o usuário
-                                //isDragEnabled = true // Permitir arrastar o gráfico
-                                //setScaleEnabled(true) // Permitir zoom
-                                //setPinchZoom(true) // Permitir zoom com dois dedos
-                                // Outras configurações do gráfico podem vir aqui
-                                val barDataSet = BarDataSet(distanceData, "Distância (km)") // Rótulo do conjunto de dados
-
-                                barDataSet.color = ContextCompat.getColor(context, android.R.color.holo_blue_dark) // Cor do conjunto de dados
-
-                                xAxis.textSize = 14f
-                                xAxis.setDrawGridLines(false)
-                                xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                                val barData = BarData(barDataSet)
-                                data = barData
-
-                                animateY(1000) // Animação de entrada
-
-                                invalidate() // Atualizar o gráfico
-                            }
-                        },
-                        update = { chart ->
-                            val barDataSet = BarDataSet(distanceData, "Distância (km)")
-
-                            val xAxisVals = mutableListOf<String>()
-                            months.forEachIndexed { index, value ->
-                                xAxisVals.add(index, value)
-                            }
-
-                            val xAxisFormatter = IndexAxisValueFormatter(xAxisVals)
-                            chart.xAxis.valueFormatter = xAxisFormatter
-
-                            val barData = BarData(barDataSet)
-                            chart.data = barData
-                            chart.invalidate()
-                        }
+                            .padding(12.dp, 0.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(16.dp)
+                                .widthIn(max = 200.dp),
+                            text = "Fuel/Charging",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            modifier = Modifier.padding(24.dp, 16.dp),
+                            text = "\$${totalRechargesCost}",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp, 0.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(16.dp)
+                                .widthIn(max = 200.dp),
+                            text = "Maintenance",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            modifier = Modifier.padding(24.dp, 16.dp),
+                            text = "\$${totalMaintenancesCost}",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp, 0.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(16.dp)
+                                .widthIn(max = 200.dp),
+                            text = "Insurance",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            modifier = Modifier.padding(24.dp, 16.dp),
+                            text = "\$${totalInsurancesCost}",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp, 0.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(16.dp)
+                                .widthIn(max = 200.dp),
+                            text = "All",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            modifier = Modifier.padding(24.dp, 16.dp),
+                            text = "\$${totalAllCost}",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
+            }
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                            .padding(0.dp, 16.dp),
+                        text = "Recent Maintenances",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface
+            items(maintenances) { maintenance ->
+                MaintenanceCard(
+                    maintenance = maintenance,
+                    modifier = Modifier.fillMaxWidth()
                 )
-            ) {
-                Column(
+            }
+            item {
+                Card(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 ) {
                     Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = "Cost Distribution",
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                            .padding(0.dp, 16.dp),
+                        text = "Recent Accidents",
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
-                    AndroidView(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        factory = { context ->
-                            PieChart(context).apply {
-                                description.isEnabled = false
-                                setUsePercentValues(true)
-                                isDrawHoleEnabled = true
-                                holeRadius = 40f
-                                transparentCircleRadius = 45f
-
-                                legend.isEnabled = true // Garante que a legenda esteja visível
-                                legend.textSize = 14f
-
-                                val pieDataSet = PieDataSet(costData, "Costs")
-                                pieDataSet.colors = ColorTemplate.LIBERTY_COLORS.toList()
-                                pieDataSet.setDrawValues(false)
-                                setDrawEntryLabels(false)
-
-                                val pieData = PieData(pieDataSet)
-                                data = pieData
-                                invalidate()
-                            }
-                        },
-                        update = { chart ->
-                            chart.setDrawEntryLabels(false)
-                            chart.legend.isEnabled = true // Garante que a legenda esteja visível
-                            chart.legend.textSize = 14f
-                            val pieDataSet = PieDataSet(costData, "Costs")
-                            pieDataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-                            pieDataSet.setDrawValues(false)
-
-                            val pieData = PieData(pieDataSet)
-                            chart.data = pieData
-                            chart.invalidate()
-                        }
-                    )
                 }
+            }
+            items(accidents) { accident ->
+                AccidentCard(
+                    accident = accident,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -266,7 +508,14 @@ fun ReportsScreenPreview() {
             onBackClick = {},
             distanceData = distanceData,
             costData = costData,
-            months = months
+            months = months,
+            totalRechargesCost = 100f,
+            totalMaintenancesCost = 200f,
+            totalInsurancesCost = 300f,
+            totalAllCost = 600f,
+            costPerKm = 100f,
+            accidents = emptyList(),
+            maintenances = emptyList()
         )
     }
 }
